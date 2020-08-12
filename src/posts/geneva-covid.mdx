@@ -1,0 +1,77 @@
+---
+path: "/geneva-covid"
+date: "2020-06-01"
+title: How to keep social distances in Geneva's busy streets
+authors: "Mark Spurgeon"
+image: "gva-covid.png"
+featured: true
+color: 'rgb(50, 40, 240)'
+nobg: true
+---
+> This was originally published [there](https://the-duck.github.io/gva-covid-distancing).
+> Also, check out this [article](https://topolitique.ch/2020/04/29/comment-reinventer-les-rues-genevoises-post-coronavirus/) 
+> by Noémie Pralat at TOPO :)
+
+Right in the middle of the COVID-19 pandemic, I set out to map the places
+where physical distancing is next to impossible.
+
+As people were left with more time on their hand and were forced 
+to **queue outside** to do their shopping, the need for more public 
+space became clear.
+
+This map highlights the streets that lack public space (or **queuing spaces**) compared 
+to the estimated number of shoppers. It also proposes to 
+**pedestrianize certain streets** for people to move around safely.
+
+
+### Geneva's most crowded streets during the corona pandemic
+
+import Map from '../apps/geneva-covid'
+
+<Map />
+
+import { Legend, Square, Round, VBox, HBox } from '../components/legend'
+
+<Legend>
+    <HBox>
+        <Square bg="#fcae91" label=" > 5 (OK)" />
+        <Square bg="#FC9272" label="< 5" />
+        <Square bg="#CB181D" label="< 0" />
+        <Square bg="#a50f15" label="< -5 (Critical)" />
+    </HBox>
+    <HBox>
+        <Round bg="#74a9cf" outline="#5C87A5" label="Supermarket" />
+        <Round bg="#addd8e" outline="#8AB071" label="Chemist" />
+    </HBox>
+</Legend>
+
+### Queuing spaces
+
+It is impossible to know the exact numbers of shoppers per shop, especially
+as these are exceptional times and not all shops are opened, but some shops 
+are more successful than others. 
+
+Hence, I have estimated the number of customers based on observations, or rather
+the number of people queuing outside during rush hours (noting that 
+they still exist despite the change). 
+
+| Shop | Queuing places | Comment |
+|---|---|---|
+| Very Big Supermarket | 35 | Rare but creates crowds |
+| Big Supermarket & 'Department Store' | 30 | The most frequent |
+| Small Supermarket | 15 | Second most frequent |
+| Convenience Stores | 10 | Alternative to supermarket |
+| Bakeries, Restaurants, ... | 4 | Varies a lot... | 
+
+
+### Free space
+
+Free space is the space that allows people to move and stand around safely. 
+It excludes the space dedicated to cars. Even though fewer cars are
+around, pedestrians tend not to use that space. 
+
+The next step was to calculate the number of queuing places outside. A grid of
+points seperated by a **2m distance** has been created to simulate the recommended 
+distance. Though the configuration may allow for more people to queue on a given 
+space, it represents a detailed enough representation of how many queuing spaces 
+are available.

@@ -1,0 +1,19 @@
+.ol-zoom, .ol-zoom:hover {
+    background-color: rgba(100,100,100, 0.3);
+}
+  
+.ol-zoom-in, .ol-zoom-out {
+    border-style: solid; border-width: 1px; border-color: rgb(100, 100, 100);
+    background-color: white !important;
+    color: #333 !important
+}
+
+.ol-zoom-in:hover, .ol-zoom-out:hover {
+    background-color: rgb(235,235,235) !important;
+}
+
+.ol-attribution { display: none; }
+
+.ol-touch .ol-control button {
+    font-size: 1rem;
+}

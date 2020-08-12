@@ -1,0 +1,14 @@
+{
+"type": "FeatureCollection",
+"name": "places",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 0, "NOM": "Les Pâquis" }, "geometry": { "type": "Point", "coordinates": [ 684347.054104867973365, 5814402.799545587971807 ] } },
+{ "type": "Feature", "properties": { "id": 0, "NOM": "St-Gervais" }, "geometry": { "type": "Point", "coordinates": [ 683860.25583817367442, 5813674.730035303160548 ] } },
+{ "type": "Feature", "properties": { "id": 0, "NOM": "Rues Basses" }, "geometry": { "type": "Point", "coordinates": [ 684616.448550587520003, 5812960.409899015910923 ] } },
+{ "type": "Feature", "properties": { "id": 0, "NOM": "Eaux-Vives" }, "geometry": { "type": "Point", "coordinates": [ 685786.0368646918796, 5813146.838800034485757 ] } },
+{ "type": "Feature", "properties": { "id": 0, "NOM": "Carl-Vogt" }, "geometry": { "type": "Point", "coordinates": [ 682589.873264615540393, 5812502.434768747538328 ] } },
+{ "type": "Feature", "properties": { "id": 0, "NOM": "Cirque" }, "geometry": { "type": "Point", "coordinates": [ 683536.400989722227678, 5812601.320481037721038 ] } },
+{ "type": "Feature", "properties": { "id": 0, "NOM": "Rue de Carouge" }, "geometry": { "type": "Point", "coordinates": [ 683928.174662847188301, 5811118.23076169192791 ] } }
+]
+}

@@ -1,0 +1,24 @@
+::selection {
+    background: #ffab61; /* WebKit/Blink Browsers */
+}
+::-moz-selection {
+    background: #ffab61; /* Gecko Browsers */
+}
+
+html {
+    background-color: #ffdab9;
+    padding: 0;
+    margin: 0;
+    font-size: 14pt
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+@media (max-width: 600px) {
+    html {
+        font-size: 12pt;
+    }
+}
