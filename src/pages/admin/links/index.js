@@ -25,22 +25,24 @@ export default () => {
   const [links, setLinks] = useState([]);
 
   useEffect(() => {
-    const octokit = new Octokit({
-      auth: authToken
-    });
-    
-    octokit.repos.getContent({
-      owner: "the-duck",
-      repo: "databases",
-      path: 'links.json',
-    })
-    .then(({ data }) => {
-      let decodedData = JSON.parse(atob(data.content)).sort((a,b) => b.id - a.id)
-      setLinks(decodedData)
-    })
-    .catch(error => {
-      console.warn(`Network error ! Try again later. Message: ${error.message}`)
-    })
+    if (authToken) {
+      const octokit = new Octokit({
+        auth: authToken
+      });
+      
+      octokit.repos.getContent({
+        owner: "the-duck",
+        repo: "databases",
+        path: 'links.json',
+      })
+      .then(({ data }) => {
+        let decodedData = JSON.parse(atob(data.content)).sort((a,b) => b.id - a.id)
+        setLinks(decodedData)
+      })
+      .catch(error => {
+        console.warn(`Network error ! Try again later. Message: ${error.message}`)
+      })
+    }
   }, [authToken])
 
   const onLinkChange = (updatedLink) => {
@@ -101,7 +103,7 @@ export default () => {
   })
 
   return (
-    <main style={{marginTop: '5rem', padding: '0.5rem'}}>
+    <main style={{ padding: '0.5rem' }}>
       <Helmet>
         <Head />
         <title>Marko's Links</title>

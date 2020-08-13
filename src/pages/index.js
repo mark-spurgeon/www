@@ -12,6 +12,8 @@ import PostCard from '../components/index/card-post'
 import RecentPostsCard from '../components/index/card-recentposts'
 import Links from '../components/index/links'
 
+import MobilePosts from '../components/index/mobile-posts'
+
 const Container = styled.div`
   position: absolute;
   top: 0;
@@ -37,6 +39,9 @@ const Screen = styled.div`
   flex: 1;
   background-color: rgb(50, 60, 80);
   overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
 `
 
 const NavigationContainer = styled.div`
@@ -77,13 +82,16 @@ const PostCardsContainer = styled.div`
   justify-content: stretch;
 `
 
-export default ({
+const Index = ({
   data
 }) => {
   const [image, setImage] = useState(null);
-  const items = data.allMdx.edges
   
-  const FeaturedPosts = items.map(item => {
+  const allImages = data.images.edges
+  const allPosts = data.allMdx.edges
+  const featuredPosts = data.allMdx.edges.filter(item => item.node.frontmatter.featured === 'true')
+  
+  const FeaturedPostsDesktop = allPosts.map(item => {
     // TODO: replace 'true' with item.node.frontmatter.featured
     return true ? <PostCard 
       frontmatter={item.node.frontmatter} 
@@ -101,21 +109,24 @@ export default ({
         <Links />
       </Header>
       <Screen>
+        <MobilePosts items={allPosts} images={allImages} />
         <Img fluid={image} />
       </Screen>
       <NavigationContainer>
         <Navigation>
           <MeCard />
-          <PostCardsContainer>
-            {FeaturedPosts}
-          </PostCardsContainer>
-          <RecentPostsCard items={items} />
+              <PostCardsContainer>
+                {FeaturedPostsDesktop}
+              </PostCardsContainer>
+              <RecentPostsCard items={allPosts} />
         </Navigation>
       </NavigationContainer>
       <Footer />
     </Container>
   );
 }
+
+export default Index;
 
 export const pageQuery = graphql`
   query {

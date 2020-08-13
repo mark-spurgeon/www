@@ -13,12 +13,3 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
     },
   })
 }
-
-exports.createPages = ({ actions }) => {
-  const { createRedirect } = actions
-  createRedirect({
-    fromPath: '/gva',
-    toPath: '/geneva-covid',
-    isPermanent: true,
-  })
-}

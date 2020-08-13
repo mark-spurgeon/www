@@ -27,6 +27,8 @@ export default ({
     let cpc = Cookies.get('ms-links-passcode')
     if (cpc) {
       setCookiePassCode(cpc)
+    } else {
+      setCookieChecked(true)
     }
   }, [])
 
@@ -71,7 +73,7 @@ export default ({
 
   return (
     <AuthContainer>
-      <Label>{cookieChecked ? 'Passcode' : 'Looking up for passcode'}</Label>
+      <Label>{cookieChecked ? 'Passcode' : 'Looking up for passcode...'}</Label>
       { 
         cookieChecked && 
           <HBox>

@@ -62,3 +62,5 @@ export const Button = styled.button`
     text-decoration: underline;
   }
 `
+
+export default () => <div />

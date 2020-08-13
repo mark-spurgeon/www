@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from '@emotion/styled'
+
 import Legend from './legend'
 import Label from './label'
 import Square from './square'
