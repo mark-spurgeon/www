@@ -28,6 +28,10 @@ const ListContainer = styled.div`
   flex: 1;
   overflow: hidden;
   margin-right: 0.5rem;
+  @media (max-width: 600px) {
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
 `
 
 const LinkSeparator = styled.span`
@@ -60,9 +64,10 @@ const Link = ({
   name,
   data,
   category,
+  separator = true,
 }) => (
   <StyledLink href={data} category={category} title={name} target="_blank">
-    <LinkSeparator>/ </LinkSeparator>
+    { separator && <LinkSeparator>/ </LinkSeparator> }
     {name}
   </StyledLink>
 )
@@ -89,7 +94,8 @@ export default () => {
         const { scrollLeft } = listContainer.current;
         
         if (scrollLeft > scroll.current || scrollLeft === 0) {
-          listContainer.current.scrollBy({left: 20, behavior: 'smooth'})
+          // listContainer.current.scrollBy({left: 20, behavior: 'smooth'})
+          listContainer.current.scrollLeft += 20;
         } else {
           listContainer.current.scrollTo({left: 0, behavior: 'smooth'})
         }
@@ -101,7 +107,7 @@ export default () => {
     return () => clearInterval(interval);
   }, []);
 
-  let linkListItems = links.map(data => <Link {...data} key={data.data} />)
+  let linkListItems = links.map((data, index) => <Link {...data} key={data.data} separator={(index !== 0)} />)
   
   return (
     <>

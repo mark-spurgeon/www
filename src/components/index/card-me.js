@@ -111,7 +111,7 @@ const SocialBox = styled.div`
 const Social = styled.a`
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.75rem;
-    background-color: ${props => props.nobg ? 'transparent' : '#FBCCAB'};
+    background-color: ${props => props.nobg ? 'transparent' : '#FECD9A'};
     padding: 0.15rem 0.6rem 0.15rem 0.6rem;
     border-radius: 0.75rem;
     margin-right: ${props => props.nobg ? '0' : '0.4rem'};

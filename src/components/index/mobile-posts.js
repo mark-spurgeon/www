@@ -28,7 +28,7 @@ const PostContainer = styled.a`
   margin: 0.5rem 0.5rem 0 0;
   position: relative;
   text-decoration:none;
-  background: #FBCCAB;
+  background: #FECD9A;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -55,7 +55,11 @@ const Headline = styled.h2`
 export default ({ items, images }) => {
 
   let postList = items.map(item => {
-    let image = images.filter(i => i.node.relativePath === item.node.frontmatter.image)[0]
+    let image = images.filter(i => {
+      return i.node.relativePath === item.node.frontmatter.image;
+    }).sort((a, b) => {
+      return b.node.date - a.node.date;
+    })[0]
     let fluid;
     try {
       fluid = image.node.childImageSharp.fluid;

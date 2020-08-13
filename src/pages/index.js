@@ -37,7 +37,7 @@ const Header = styled.div`
 
 const Screen = styled.div`
   flex: 1;
-  background-color: rgb(50, 60, 80);
+  /*background-color: rgb(50, 60, 80);*/
   overflow: hidden;
 
   display: flex;
