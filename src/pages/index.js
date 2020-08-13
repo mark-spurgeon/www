@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { graphql } from "gatsby";
 import styled from '@emotion/styled';
 import Img from 'gatsby-image';
+import BackgroundImage from 'gatsby-background-image'
 
 import Head from '../components/head'
 import Footer from '../components/footer'
 
 import MeCard from '../components/index/card-me'
 import PostCard from '../components/index/card-post'
+import DesktopPosts from '../components/index/desktop-posts'
 
 import RecentPostsCard from '../components/index/card-recentposts'
 import Links from '../components/index/links'
@@ -44,6 +46,13 @@ const Screen = styled.div`
   flex-direction: column;
 `
 
+const ScreenImage = styled(BackgroundImage)`
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  @media (max-width: 600px) {display: none}
+`
+
 const NavigationContainer = styled.div`
   z-index: 1000;
   flex: 0;
@@ -74,14 +83,6 @@ const Navigation = styled.div`
   background-color: #ffdab9;
 `
 
-const PostCardsContainer = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  justify-content: stretch;
-`
-
 const Index = ({
   data
 }) => {
@@ -89,17 +90,7 @@ const Index = ({
   
   const allImages = data.images.edges
   const allPosts = data.allMdx.edges
-  const featuredPosts = data.allMdx.edges.filter(item => item.node.frontmatter.featured === 'true')
-  
-  const FeaturedPostsDesktop = allPosts.map(item => {
-    // TODO: replace 'true' with item.node.frontmatter.featured
-    return true ? <PostCard 
-      frontmatter={item.node.frontmatter} 
-      data={data}
-      onHover={({ image }) => setImage(image)}
-      key={item.node.slug}
-    /> : null;
-  })
+  const featuredPosts = data.allMdx.edges.filter(item => item.node.frontmatter.featured)
 
 
   return (
@@ -110,14 +101,12 @@ const Index = ({
       </Header>
       <Screen>
         <MobilePosts items={allPosts} images={allImages} />
-        <Img fluid={image} />
+        <ScreenImage fluid={image} />
       </Screen>
       <NavigationContainer>
         <Navigation>
           <MeCard />
-              <PostCardsContainer>
-                {FeaturedPostsDesktop}
-              </PostCardsContainer>
+              <DesktopPosts items={allPosts} data={data} setImage={setImage} />
               <RecentPostsCard items={allPosts} />
         </Navigation>
       </NavigationContainer>

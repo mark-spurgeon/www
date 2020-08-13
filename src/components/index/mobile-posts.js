@@ -7,6 +7,8 @@ const Container = styled.div`
   display: none;
   flex-direction: row;
   flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: stretch;
 
   padding: 0 0 0.5rem 0.5rem;
   margin-bottom: 6rem;
@@ -23,7 +25,8 @@ const Container = styled.div`
 `
 
 const PostContainer = styled.a`
-  flex: 1;
+  flex: 1 1;
+  height: 9.5rem;
   min-width: 150px;
   margin: 0.5rem 0.5rem 0 0;
   position: relative;
@@ -37,24 +40,39 @@ const PostContainer = styled.a`
 const Thumbnail = styled(BackgroundImage)`
   display: block;
   width: 100%;
-  height: 7.5rem;
+  min-height: 5.5rem;
+  ${props => (props.index === 2) ? `
+    overflow: hidden;
+    height: 9.5rem;
+  `: null}
 `
 
 const Headline = styled.h2`
   display: block;
   padding: 0;
-  margin: 0.25rem;;
+  margin: 0.25rem;
   font-family: 'IBM Plex Mono', monospace;
   font-weight: 400;
   font-size: 0.9rem;
   line-height: 0.9rem;
   min-height: 3.6rem;
   bottom: 0;
+  ${props => (props.index === 2) ? `
+    position: absolute;
+    bottom: 0;
+    color: ${props.color || 'white'};
+    margin: 0.5rem;
+    margin-bottom: 0.25rem;
+    text-shadow: -0.5px 0.5px 0 ${props.outline},
+    0.5px 0.5px 0 ${props.outline},
+    0.5px -0.5px 0 ${props.outline},
+        -0.5px -0.5px 0 ${props.outline};
+  `: null}
 `
 
 export default ({ items, images }) => {
 
-  let postList = items.map(item => {
+  let postList = items.map((item, index) => {
     let image = images.filter(i => {
       return i.node.relativePath === item.node.frontmatter.image;
     }).sort((a, b) => {
@@ -66,11 +84,16 @@ export default ({ items, images }) => {
     } catch {}
 
     return (
-      <PostContainer key={item.node.frontmatter.title} href={`/${item.node.slug}`}>
+      <PostContainer key={item.node.frontmatter.title} href={`/${item.node.slug}`} index={index}>
           { fluid && 
-            <Thumbnail fluid={fluid} />
+            <Thumbnail fluid={fluid} index={index} />
           }
-          <Headline>{item.node.frontmatter.title}</Headline>
+          <Headline 
+            index={index} color={item.node.frontmatter.color || 'black'}
+            outline={item.node.frontmatter.outline || 'transparent'}
+            >
+            {item.node.frontmatter.title}
+          </Headline>
       </PostContainer>
     )
   }
