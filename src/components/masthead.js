@@ -7,66 +7,66 @@ import Img from 'gatsby-image';
 import Head from './head'
 
 const Container = styled.div`
-    display: block;
-    position: relative;
-    height: 300px;
-    max-height: 400px;
-    width: 100%;
-    margin-bottom: 1rem;
+  display: block;
+  position: relative;
+  height: 300px;
+  max-height: 400px;
+  width: 100%;
+  margin-bottom: 1rem;
 
-    @media (max-width: 800px) {
-        height: 200px;
-    }
-    @media (max-width: 500px) {
-        height: 100px;
-    }
+  @media (max-width: 800px) {
+      height: 200px;
+  }
+  @media (max-width: 500px) {
+      height: 100px;
+  }
 `
 
 const ImageContainer = styled.div`
-    display: ${props => props.nobg ? 'none': 'block'};
-    min-width: 100%;
-    position: absolute;
-    top: -100px;
-    left: 0;
-    right: 0;
-    height: 400px;
-    overflow: hidden;
+  display: ${props => props.nobg ? 'none': 'block'};
+  min-width: 100%;
+  position: absolute;
+  top: -100px;
+  left: 0;
+  right: 0;
+  height: 400px;
+  overflow: hidden;
 
-    @media (max-width: 800px) {
-        top: 0;
-        height: 200px;
-    }
-    @media (max-width: 500px) {
-        height: 100px;
-    }
+  @media (max-width: 800px) {
+      top: 0;
+      height: 200px;
+  }
+  @media (max-width: 500px) {
+      height: 100px;
+  }
 `
 
 const TextContainer = styled.div`
-    width: 100%;
-    position: absolute;
-    bottom: -1.3rem;
+  width: 100%;
+  position: absolute;
+  bottom: -1.3rem;
 `
 
 const Title = styled.span`
-    display: block;
-    color: ${props => props.color};
-    text-shadow: -1px 1px 0 ${props => props.outline},
-        1px 1px 0 ${props => props.outline},
-        1px -1px 0 ${props => props.outline},
-        -1px -1px 0 ${props => props.outline};
-    font-family: 'IBM Plex Mono', -apple-system, BlinkMacSystemFont;
-    font-weight: 300;
-    font-size: 2.2rem;
-    text-rendering: geometricPrecision;
-    max-width: 48rem !important;
-    margin: 0 auto;
-    text-align: center;
-    @media (max-width: 800px) {
-        font-size: 1.25rem;
-        font-weight: 400;
-        padding-left: 0.25rem;
-        padding-right: 0.25rem;
-    }
+  display: block;
+  color: ${props => props.color};
+  text-shadow: -1px 1px 0 ${props => props.outline},
+      1px 1px 0 ${props => props.outline},
+      1px -1px 0 ${props => props.outline},
+      -1px -1px 0 ${props => props.outline};
+  font-family: 'IBM Plex Mono', -apple-system, BlinkMacSystemFont;
+  font-weight: 300;
+  font-size: 2.2rem;
+  text-rendering: geometricPrecision;
+  max-width: 48rem !important;
+  margin: 0 auto;
+  text-align: center;
+  @media (max-width: 800px) {
+    font-size: 1.25rem;
+    font-weight: 400;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+  }
 `
 const Authors = styled.span`
     display: block;
@@ -87,7 +87,7 @@ const Authors = styled.span`
     text-align: center;
     
     @media (max-width: 800px) {
-        font-size: 0.75rem;
+      font-size: 0.75rem;
     }
 `
 
@@ -99,20 +99,20 @@ export default ({
 }) => { 
     let query = graphql`
     query {
-        images: allFile {
-          edges {
-            node {
-              relativePath
-              name
-              childImageSharp {
-                fluid(maxWidth: 1200) {
-                  ...GatsbyImageSharpFluid
-                }
+      images: allFile {
+        edges {
+          node {
+            relativePath
+            name
+            childImageSharp {
+              fluid(maxWidth: 1200) {
+                ...GatsbyImageSharpFluid
               }
             }
           }
         }
       }
+    }
     `
     const data = useStaticQuery(query)
     var imageFluid = ''
@@ -124,23 +124,23 @@ export default ({
 
 
     return (
-        <Container>
-            <Helmet>
-                <Head />
-                <title>{frontmatter.title}</title>
-                <meta 
-                    name="description" 
-                    content={frontmatter.description || frontmatter.title} />
-            </Helmet>
-            <ImageContainer nobg={nobg}><Img fluid={imageFluid} /></ImageContainer>
-            <TextContainer>
-                <Title color={frontmatter.color || color} outline={frontmatter.outline || outline}>
-                    {frontmatter.title}
-                </Title>
-                <Authors color={frontmatter.color || color} outline={frontmatter.outline || outline}>
-                    {frontmatter.authors || 'Mark Spurgeon'}
-                </Authors>
-            </TextContainer>
-        </Container>
+      <Container>
+        <Helmet>
+          <Head />
+          <title>{frontmatter.title}</title>
+          <meta 
+              name="description" 
+              content={frontmatter.description || frontmatter.title} />
+        </Helmet>
+        <ImageContainer nobg={nobg}><Img fluid={imageFluid} /></ImageContainer>
+        <TextContainer>
+          <Title color={frontmatter.color || color} outline={frontmatter.outline || outline}>
+              {frontmatter.title}
+          </Title>
+          <Authors color={frontmatter.color || color} outline={frontmatter.outline || outline}>
+              {frontmatter.authors || 'Mark Spurgeon'}
+          </Authors>
+        </TextContainer>
+      </Container>
     )
 }
