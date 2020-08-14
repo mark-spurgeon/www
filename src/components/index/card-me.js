@@ -174,7 +174,7 @@ const SeriousLink = styled.a`
 `
 
 export default () => {
-    const [hovered, setHovered] = useState(false);
+    const [hovered, setHovered] = useState(true);
     const onMouseEnter = () => {
         setHovered(true)
     }

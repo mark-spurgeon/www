@@ -62,7 +62,10 @@ const Title = styled.span`
     margin: 0 auto;
     text-align: center;
     @media (max-width: 800px) {
-        font-size: 1.4rem;
+        font-size: 1.25rem;
+        font-weight: 400;
+        padding-left: 0.25rem;
+        padding-right: 0.25rem;
     }
 `
 const Authors = styled.span`
@@ -84,7 +87,7 @@ const Authors = styled.span`
     text-align: center;
     
     @media (max-width: 800px) {
-        font-size: 0.85rem;
+        font-size: 0.75rem;
     }
 `
 
@@ -135,7 +138,7 @@ export default ({
                     {frontmatter.title}
                 </Title>
                 <Authors color={frontmatter.color || color} outline={frontmatter.outline || outline}>
-                    {frontmatter.authors || 'Mark'}
+                    {frontmatter.authors || 'Mark Spurgeon'}
                 </Authors>
             </TextContainer>
         </Container>

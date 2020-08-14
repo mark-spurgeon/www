@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { graphql } from "gatsby";
 import styled from '@emotion/styled';
-import Img from 'gatsby-image';
 import BackgroundImage from 'gatsby-background-image'
 
 import Head from '../components/head'
 import Footer from '../components/footer'
 
 import MeCard from '../components/index/card-me'
-import PostCard from '../components/index/card-post'
 import DesktopPosts from '../components/index/desktop-posts'
 
 import RecentPostsCard from '../components/index/card-recentposts'
@@ -87,11 +85,9 @@ const Index = ({
   data
 }) => {
   const [image, setImage] = useState(null);
-  
-  const allImages = data.images.edges
-  const allPosts = data.allMdx.edges
-  const featuredPosts = data.allMdx.edges.filter(item => item.node.frontmatter.featured)
 
+  let featuredPosts = data.posts.edges.filter(i => i.node.frontmatter.featured === true)
+  let otherPosts = data.posts.edges.filter(i => !i.node.frontmatter.featured)
 
   return (
     <Container>
@@ -100,14 +96,14 @@ const Index = ({
         <Links />
       </Header>
       <Screen>
-        <MobilePosts items={allPosts} images={allImages} />
+        <MobilePosts items={featuredPosts} images={data.images.edges} />
         <ScreenImage fluid={image} />
       </Screen>
       <NavigationContainer>
         <Navigation>
           <MeCard />
-              <DesktopPosts items={allPosts} data={data} setImage={setImage} />
-              <RecentPostsCard items={allPosts} />
+              <DesktopPosts items={featuredPosts} data={data} setImage={setImage} />
+              <RecentPostsCard items={otherPosts} />
         </Navigation>
       </NavigationContainer>
       <Footer />
@@ -119,17 +115,24 @@ export default Index;
 
 export const pageQuery = graphql`
   query {
-    allMdx (sort: { fields: [frontmatter___date], order: DESC }) {
+    posts : allMdx(sort: {fields: [frontmatter___date], order: DESC}) {
       edges {
         node {
           frontmatter {
             title
-            path
             date
             image
             featured
             authors
             color
+            outline
+            featuredImage {
+              childImageSharp {
+                fluid(maxWidth: 1400) {
+                  ...GatsbyImageSharpFluid
+                }
+              }
+            }
           }
           slug
         }

@@ -53,25 +53,36 @@ const CardBox = styled.a`
     &:hover {
         max-height: 10rem;
         height: 10rem;
-        border-top-left-radius: 3px;
-        border-top-right-radius: 3px;
     }
 
 `
 
 const Title = styled.div`
+  display: block;
+  height: 100%;
     font-family: 'IBM Plex Mono', monospace;
     font-weight: 400;
-    font-size: 1.333rem;
+    font-size: 1.1rem;
     line-height: 1;
     padding: 0.5rem;
     color: ${props => props.color};
+
+    border-width: 0;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+    &:hover {
+      border-color: #f0cbab;
+    }
+    transition: all .4s;
 `
 
 const PostCard = ({
     data,
     frontmatter,
     onHover,
+    href,
 }) => {
     var imageFluid = ''
     data.images.edges.forEach(im => {
@@ -83,7 +94,7 @@ const PostCard = ({
     return (
         <PostCardContainer>
             <CardBox
-                href={frontmatter.path}
+                href={href}
                 title={frontmatter.title}
                 color={frontmatter.color}
                 onMouseEnter={() => onHover({
@@ -100,14 +111,16 @@ const PostCard = ({
 
 export default ({ items, data, setImage }) => {
 
-  let featuredPosts = items.map(item => {
+  let filteredItems = items.slice(0, 4);
+  let featuredPosts = filteredItems.map(item => {
     // TODO: replace 'true' with item.node.frontmatter.featured
-    return true ? <PostCard 
+    return <PostCard 
+      href={`/${item.node.slug}`}
       frontmatter={item.node.frontmatter} 
       data={data}
       onHover={({ image }) => setImage(image)}
       key={item.node.slug}
-    /> : null;
+    />
   })
 
   return (

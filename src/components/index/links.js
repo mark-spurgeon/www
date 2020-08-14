@@ -94,8 +94,8 @@ export default () => {
         const { scrollLeft } = listContainer.current;
         
         if (scrollLeft > scroll.current || scrollLeft === 0) {
-          // listContainer.current.scrollBy({left: 20, behavior: 'smooth'})
-          listContainer.current.scrollLeft += 20;
+          listContainer.current.scrollBy({left: 20, behavior: 'smooth'})
+          // listContainer.current.scrollLeft += 20;
         } else {
           listContainer.current.scrollTo({left: 0, behavior: 'smooth'})
         }

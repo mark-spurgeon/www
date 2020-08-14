@@ -124,6 +124,12 @@ const Styled = styled.div`
     a {
         color: #0070b8;
     }
+
+    iframe {
+        display: block;
+        margin: 0 auto;
+        max-width: 100%;
+    }
 `
 
 const Article = styled.article`

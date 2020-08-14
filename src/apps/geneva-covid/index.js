@@ -273,6 +273,7 @@ const MapContainer = styled.div`
 
   @media (max-width: 600px) {
     height: 400px;
+    min-height: 400px;
   }
 `
 
