@@ -96,13 +96,13 @@ const Index = ({
         <Links />
       </Header>
       <Screen>
-        <MobilePosts items={featuredPosts} images={data.images.edges} />
+        <MobilePosts items={featuredPosts} />
         <ScreenImage fluid={image} />
       </Screen>
       <NavigationContainer>
         <Navigation>
           <MeCard />
-              <DesktopPosts items={featuredPosts} data={data} setImage={setImage} />
+              <DesktopPosts items={featuredPosts} setImage={setImage} />
               <RecentPostsCard items={otherPosts} />
         </Navigation>
       </NavigationContainer>
@@ -121,7 +121,6 @@ export const pageQuery = graphql`
           frontmatter {
             title
             date
-            image
             featured
             authors
             color
@@ -135,19 +134,6 @@ export const pageQuery = graphql`
             }
           }
           slug
-        }
-      }
-    }
-    images: allFile {
-      edges {
-        node {
-          relativePath
-          name
-          childImageSharp {
-            fluid(maxWidth: 1400) {
-              ...GatsbyImageSharpFluid
-            }
-          }
         }
       }
     }

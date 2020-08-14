@@ -70,18 +70,10 @@ const Headline = styled.h2`
   `: null}
 `
 
-export default ({ items, images }) => {
+export default ({ items }) => {
 
   let postList = items.map((item, index) => {
-    let image = images.filter(i => {
-      return i.node.relativePath === item.node.frontmatter.image;
-    }).sort((a, b) => {
-      return b.node.date - a.node.date;
-    })[0]
-    let fluid;
-    try {
-      fluid = image.node.childImageSharp.fluid;
-    } catch {}
+    let { fluid } = item.node.frontmatter.featuredImage.childImageSharp
 
     return (
       <PostContainer key={item.node.frontmatter.title} href={`/${item.node.slug}`} index={index}>
@@ -96,8 +88,7 @@ export default ({ items, images }) => {
           </Headline>
       </PostContainer>
     )
-  }
-  )
+  })
 
   return (
     <Container>

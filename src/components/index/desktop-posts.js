@@ -79,34 +79,24 @@ const Title = styled.div`
 `
 
 const PostCard = ({
-    data,
     frontmatter,
     onHover,
     href,
-}) => {
-    var imageFluid = ''
-    data.images.edges.forEach(im => {
-        if (im.node.relativePath === frontmatter.image) {
-            imageFluid = im.node.childImageSharp.fluid;
-        }
-    })
-  
-    return (
+}) => (
         <PostCardContainer>
             <CardBox
                 href={href}
                 title={frontmatter.title}
                 color={frontmatter.color}
                 onMouseEnter={() => onHover({
-                    image: imageFluid,
+                    image: frontmatter.featuredImage.childImageSharp.fluid,
                 })}
                 >
                 <ColorDiv color={frontmatter.color} />
                 <Title color={frontmatter.color}>{frontmatter.title}</Title>
             </CardBox>
         </PostCardContainer>
-    )
-  }
+)
 
 
 export default ({ items, data, setImage }) => {
