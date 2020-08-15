@@ -25,6 +25,7 @@ const hoveredStyles = css`
   border-color: #f0cbab;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
+  box-shadow: 0 0 4px 4px rgb(50, 50, 50, 0.04);
 `
 
 const MeCard = styled.div`

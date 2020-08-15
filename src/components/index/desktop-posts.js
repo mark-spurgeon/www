@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 
 const DesktopPostsContainer = styled.div`
@@ -25,10 +25,11 @@ const ColorDiv = styled.div`
 
     height: 5px;
     background-color: ${props => props.color};
-
-    &:hover {
-        height: 6px;
-    }
+  
+  transition: all .3s;
+  ${props => props.hovered ? `
+    height: 7px;
+  ` : null}
 `
 
 const CardBox = styled.a`
@@ -50,11 +51,12 @@ const CardBox = styled.a`
     background-color: inherit;
 
     transition: all .3s;
-    &:hover {
-        max-height: 10rem;
-        height: 10rem;
-    }
-
+    ${props => props.hovered ? `
+      z-index: 100;
+      max-height: 10rem;
+      height: 10rem;
+      box-shadow: 0 0 4px 4px rgb(50, 50, 50, 0.04);
+    ` : null}
 `
 
 const Title = styled.div`
@@ -65,38 +67,47 @@ const Title = styled.div`
     font-size: 1.1rem;
     line-height: 1;
     padding: 0.5rem;
-    color: ${props => props.color};
+    color: ${props => props.hovered ? 'black' : props.color};
 
     border-width: 0;
     border-left-width: 1px;
     border-right-width: 1px;
     border-style: solid;
     border-color: transparent;
-    &:hover {
-      border-color: #f0cbab;
-    }
     transition: all .4s;
+    ${props => props.hovered ? `
+      border-color: #e7be95;
+    ` : null}
 `
 
 const PostCard = ({
     frontmatter,
     onHover,
     href,
-}) => (
+}) => {
+  const [hovered, setHovered] = useState(false);
+  
+  return (
         <PostCardContainer>
             <CardBox
                 href={href}
                 title={frontmatter.title}
                 color={frontmatter.color}
-                onMouseEnter={() => onHover({
+                onMouseEnter={() => {
+                  setHovered(true)
+                  onHover({
                     image: frontmatter.featuredImage.childImageSharp.fluid,
-                })}
+                  })
+                }}
+                onMouseLeave={() => setHovered(false)}
+                hovered={hovered}
                 >
-                <ColorDiv color={frontmatter.color} />
-                <Title color={frontmatter.color}>{frontmatter.title}</Title>
+                <ColorDiv color={frontmatter.color} hovered={hovered} />
+                <Title color={frontmatter.color} hovered={hovered}>{frontmatter.title}</Title>
             </CardBox>
         </PostCardContainer>
-)
+  )
+}
 
 
 export default ({ items, data, setImage }) => {
