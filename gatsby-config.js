@@ -5,6 +5,7 @@ module.exports = {
     url: "https://markspurgeon.ch",
   },
   plugins: [
+    `gatsby-plugin-loadable-components-ssr`,
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-emotion`,
     {
