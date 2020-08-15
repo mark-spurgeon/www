@@ -195,23 +195,23 @@ export default () => {
                 </Description>
 
                 <SocialBox>
-                    <Social>
+                    <Social href="mailto:markspurgeon96@hotmail.com" title="Marko's E-mail">
                         <FontAwesomeIcon icon={faPaperPlane} />  markspurgeon96@hotmail.com
                     </Social>
-                    <Social href="https://github.com/the-duck" target="_blank" color="rgb(40, 50, 250)" nobg>
-                        <FontAwesomeIcon icon={faGithub} size="lg" />
+                    <Social href="https://github.com/the-duck" target="_blank" color="rgb(40, 50, 250)" title="Marko's Github" nobg>
+                        <FontAwesomeIcon icon={faGithub} size="lg" title="Github Icon"  />
                     </Social>
-                    <Social href="https://instagram.com/marko.studio" target="_blank" color="rgb(200, 50, 80)" nobg>
-                        <FontAwesomeIcon icon={faInstagram} size="lg" />
+                    <Social href="https://instagram.com/marko.studio" target="_blank" color="rgb(200, 50, 80)" title="Marko's Instagram" nobg>
+                        <FontAwesomeIcon icon={faInstagram} size="lg" title="Instagram Icon" />
                     </Social>
                 </SocialBox>
 
                 <SeriousBox hovered={hovered}>
-                    <SeriousLink href="/cv">
-                        <b><FontAwesomeIcon icon={faFile} /> CV & Skills</b>
+                    <SeriousLink href="/cv" title="Marko's CV">
+                        <b><FontAwesomeIcon icon={faFile} title="CV" /> CV & Skills</b>
                     </SeriousLink>
-                    <SeriousLink href="/links" nobg>
-                        <FontAwesomeIcon icon={faGlobe} /> Links & references
+                    <SeriousLink href="/links" title="Marko's Links" nobg>
+                        <FontAwesomeIcon icon={faGlobe} title="Links" /> Links & references
                     </SeriousLink>
                 </SeriousBox>
             </TextContainer>

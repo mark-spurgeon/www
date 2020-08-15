@@ -66,7 +66,7 @@ const Link = ({
   category,
   separator = true,
 }) => (
-  <StyledLink href={data} category={category} title={name} target="_blank">
+  <StyledLink href={data} category={category} title={name} target="_blank" rel="noopener">
     { separator && <LinkSeparator>/ </LinkSeparator> }
     {name}
   </StyledLink>

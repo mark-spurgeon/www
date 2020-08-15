@@ -1,6 +1,8 @@
 module.exports = {
   siteMetadata: {
     title: 'Marko [Mark Spurgeon]',
+    description: "I'm a geographer / cartographer and I study at the University of Geneva. I make maps, websites and artwork (3D images).",
+    url: "https://markspurgeon.ch",
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
