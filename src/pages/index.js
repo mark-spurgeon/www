@@ -127,7 +127,7 @@ export const pageQuery = graphql`
             outline
             featuredImage {
               childImageSharp {
-                fluid(maxWidth: 1300, maxHeight: 500) {
+                fluid(maxWidth: 1000, maxHeight: 500) {
                   ...GatsbyImageSharpFluid
                 }
               }

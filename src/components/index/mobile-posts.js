@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { Link } from 'gatsby';
 import BackgroundImage from 'gatsby-background-image'
 
 const Container = styled.div`
@@ -24,7 +25,7 @@ const Container = styled.div`
   }
 `
 
-const PostContainer = styled.a`
+const PostLink = styled(Link)`
   flex: 1 1;
   height: 9.5rem;
   min-width: 150px;
@@ -76,7 +77,12 @@ export default ({ items }) => {
     let { fluid } = item.node.frontmatter.featuredImage.childImageSharp
 
     return (
-      <PostContainer key={item.node.frontmatter.title} href={`/${item.node.slug}`} index={index}>
+      <PostLink
+        to={item.node.slug}
+        key={item.node.frontmatter.title}
+        title={item.node.frontmatter.title}
+        index={index}
+        >
           { fluid && 
             <Thumbnail fluid={fluid} index={index} />
           }
@@ -86,7 +92,7 @@ export default ({ items }) => {
             >
             {item.node.frontmatter.title}
           </Headline>
-      </PostContainer>
+      </PostLink>
     )
   })
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { css } from '@emotion/core';
+import { Link } from 'gatsby';
 // import { graphql, useStaticQuery } from "gatsby";
 // import { Helmet } from 'react-helmet';
 import styled from '@emotion/styled';
@@ -109,7 +110,7 @@ const SocialBox = styled.div`
     margin: 0.5rem;
 `
 
-const Social = styled.a`
+const Social = styled(Link)`
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.75rem;
     background-color: ${props => props.nobg ? 'transparent' : '#FECD9A'};
@@ -156,7 +157,7 @@ const LinkAnimation = keyframes`
 
 `
 
-const SeriousLink = styled.a`
+const SeriousLink = styled(Link)`
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.75rem;
     line-height: 1.4rem;
@@ -195,22 +196,22 @@ export default () => {
                 </Description>
 
                 <SocialBox>
-                    <Social href="mailto:markspurgeon96@hotmail.com" title="Marko's E-mail">
-                        <FontAwesomeIcon icon={faPaperPlane} />  markspurgeon96@hotmail.com
+                    <Social to="mailto:markspurgeon96@hotmail.com" title="Marko's E-mail">
+                        <FontAwesomeIcon icon={faPaperPlane} /> ⌨ markspurgeon96@hotmail.com
                     </Social>
-                    <Social href="https://github.com/the-duck" target="_blank" color="rgb(40, 50, 250)" title="Marko's Github" nobg>
+                    <Social to="https://github.com/the-duck" target="_blank" color="rgb(40, 50, 250)" title="Marko's Github" nobg>
                         <FontAwesomeIcon icon={faGithub} size="lg" title="Github Icon"  />
                     </Social>
-                    <Social href="https://instagram.com/marko.studio" target="_blank" color="rgb(200, 50, 80)" title="Marko's Instagram" nobg>
+                    <Social to="https://instagram.com/marko.studio" target="_blank" color="rgb(200, 50, 80)" title="Marko's Instagram" nobg>
                         <FontAwesomeIcon icon={faInstagram} size="lg" title="Instagram Icon" />
                     </Social>
                 </SocialBox>
 
                 <SeriousBox hovered={hovered}>
-                    <SeriousLink href="/cv" title="Marko's CV">
+                    <SeriousLink to="/cv" title="Marko's CV">
                         <b><FontAwesomeIcon icon={faFile} title="CV" /> CV & Skills</b>
                     </SeriousLink>
-                    <SeriousLink href="/links" title="Marko's Links" nobg>
+                    <SeriousLink to="/links" title="Marko's Links" nobg>
                         <FontAwesomeIcon icon={faGlobe} title="Links" /> Links & references
                     </SeriousLink>
                 </SeriousBox>

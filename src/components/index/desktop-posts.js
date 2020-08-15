@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
+import { Link } from 'gatsby';
+
 
 const DesktopPostsContainer = styled.div`
   flex: 1;
@@ -32,7 +34,7 @@ const ColorDiv = styled.div`
   ` : null}
 `
 
-const CardBox = styled.a`
+const CardBox = styled(Link)`
     label: card-box;
     display: block;
     position: absolute;
@@ -90,7 +92,7 @@ const PostCard = ({
   return (
         <PostCardContainer>
             <CardBox
-                href={href}
+                to={href}
                 title={frontmatter.title}
                 color={frontmatter.color}
                 onMouseEnter={() => {
