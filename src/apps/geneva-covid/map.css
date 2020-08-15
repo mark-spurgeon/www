@@ -1,3 +1,9 @@
+
+
+.ol-zoom {
+    font-size: 0.8rem;
+}
+
 .ol-zoom, .ol-zoom:hover {
     background-color: rgba(100,100,100, 0.3);
 }
@@ -17,3 +23,4 @@
 .ol-touch .ol-control button {
     font-size: 1rem;
 }
+

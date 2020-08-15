@@ -5,7 +5,6 @@ date: 20200601
 featured: true
 featuredImage: ../images/gva-covid.png
 color: rgb(50, 40, 240)
-nobg: true
 ---
 
 > This was originally published [there](https://the-duck.github.io/gva-covid-distancing).
@@ -26,24 +25,10 @@ to the estimated number of shoppers. It also proposes to
 
 ### Geneva's most crowded streets during the corona pandemic
 
-import Map from '../apps/geneva-covid'
 
-<Map />
+import GenevaCovidMap from '../apps/geneva-covid'
 
-import { Legend, Square, Round, VBox, HBox } from '../components/legend'
-
-<Legend>
-    <HBox>
-        <Square bg="#fcae91" label=" > 5 (OK)" />
-        <Square bg="#FC9272" label="< 5" />
-        <Square bg="#CB181D" label="< 0" />
-        <Square bg="#a50f15" label="< -5 (Critical)" />
-    </HBox>
-    <HBox>
-        <Round bg="#74a9cf" outline="#5C87A5" label="Supermarket" />
-        <Round bg="#addd8e" outline="#8AB071" label="Chemist" />
-    </HBox>
-</Legend>
+<GenevaCovidMap />
 
 ### Queuing spaces
 
@@ -74,4 +59,4 @@ The next step was to calculate the number of queuing places outside. A grid of
 points seperated by a **2m distance** has been created to simulate the recommended 
 distance. Though the configuration may allow for more people to queue on a given 
 space, it represents a detailed enough representation of how many queuing spaces 
-are available.
+are available..

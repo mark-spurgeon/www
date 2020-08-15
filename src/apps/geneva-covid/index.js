@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from 'react'
 import styled from '@emotion/styled';
+import fixUtf8 from 'fix-utf8';
+
+import { Legend, Square, Round, VBox, HBox } from '../../components/legend'
 
 import 'ol/ol.css';
 import './map.css';
-import fixUtf8 from 'fix-utf8';
-
 
 const setupMapLayers = (map) => {
   const TileLayer = require('ol/layer/Tile').default;
@@ -263,7 +264,8 @@ const setupMapEvents = (map, messageContainer) => {
 }
 
 
-const MapContainer = styled.div`
+const GenevCovidMapContainer = styled.div`
+  label: geneva-covid-map-container;
   height: 600px;
   border-style: solid;
   border-width: 1px;
@@ -306,19 +308,20 @@ const Message = styled.div`
 `
 
 const TheMap = () => {
+  const mapContainer = useRef('map');
   const messageContainer = useRef('message');
   
   useEffect(() => {
       const { Map, View } = require('ol');
       const { fromLonLat } = require('ol/proj');
-      const { defaults } = require('ol/interaction')
+      const { defaults } = require('ol/interaction');
 
       let map = new Map({
         interactions: defaults({ mouseWheelZoom:false }),
-        target: 'map',
+        target: mapContainer.current,
         view: new View({
-          center: fromLonLat([6.147, 46.206]),
-          zoom: 15.5,
+          center: fromLonLat([6.150, 46.204]),
+          zoom: 16,
           minZoom: 13.6,
         })
       })
@@ -330,13 +333,27 @@ const TheMap = () => {
   }, [])
 
   return (
-    <>
-      <MapContainer id='map'>
-      </MapContainer>
-      <Message id="legend-message" ref={messageContainer}>
+    <div className="map-container">
+      <GenevCovidMapContainer 
+        style={{width: '100%', height: 500}} 
+        ref={mapContainer} 
+        id="geneva-covid-map" />
+      <Message id="geneva-covid-legend-message" ref={messageContainer}>
         <i>Hover your mouse over things for more details. Click on the +/- buttons to zoom</i>
       </Message>
-    </>
+      <Legend>
+        <HBox>
+            <Square bg="#fcae91" label=" > 5 (OK)" />
+            <Square bg="#FC9272" label="< 5" />
+            <Square bg="#CB181D" label="< 0" />
+            <Square bg="#a50f15" label="< -5 (Critical)" />
+        </HBox>
+        <HBox>
+            <Round bg="#74a9cf" outline="#5C87A5" label="Supermarket" />
+            <Round bg="#addd8e" outline="#8AB071" label="Chemist" />
+        </HBox>
+      </Legend>
+    </div>
   )
 }
 
