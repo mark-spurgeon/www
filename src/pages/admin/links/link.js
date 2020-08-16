@@ -74,7 +74,7 @@ export default ({
     }, 1000)
   }
 
-  return (
+  return input ? (
     <LinkContainer key={index} status={input.status} >
       <HBox>
         <Id>{index}.</Id>
@@ -91,5 +91,5 @@ export default ({
         </VBox>
       </HBox>
     </LinkContainer>
-  )
+  ): null;
 }

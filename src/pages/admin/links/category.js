@@ -40,21 +40,22 @@ export default ({
     onChange(newData)
   }
 
-  return (
+
+  return input ? (
     <CategoryContainer>
       <HBox>
         <Id>{index}.</Id>
         <VBox style={{marginRight: 5}}>
           <HBox>
-            <Input label="name" value={input.name} onChange={(e) => onInput('name', e)}/>
-            <Input label="id" value={input.id} onChange={(e) => onInput('id', e)}/>
+            <Input label="name" value={input.name || ''} onChange={(e) => onInput('name', e)}/>
+            <Input label="id" value={input.id || ''} onChange={(e) => onInput('id', e)}/>
           </HBox>
           <HBox>
-            <Input label="colour" value={input.colour} onChange={(e) => onInput('colour', e)} />
-            <Input label="order" value={input.order} onChange={(e) => onInput('order', e)} />
+            <Input label="colour" value={input.colour || '' } onChange={(e) => onInput('colour', e)} />
+            <Input label="order" value={input.order || ''} onChange={(e) => onInput('order', e)} />
           </HBox>
         </VBox>
       </HBox>    
     </CategoryContainer>
-  )
+  ): null;
 }
