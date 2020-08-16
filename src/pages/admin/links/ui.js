@@ -108,3 +108,5 @@ export const Id = styled.div`
   font-size: 0.6rem;
   font-weight: 400;
 `
+
+export default () => <></>

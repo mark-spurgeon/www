@@ -199,7 +199,8 @@ export default () => {
     <main style={{ padding: '0.5rem' }}>
       <Helmet>
         <Head />
-        <title>Marko's Links</title>
+        <title>MKO ADMIN / Links</title>
+        <meta name="robots" content="noindex"></meta>
       </Helmet>
       <Heading>
         Marko's Links & References
