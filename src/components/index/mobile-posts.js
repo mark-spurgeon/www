@@ -70,7 +70,7 @@ export default ({ items }) => {
 
     return (
       <PostLink
-        to={`/${item.node.slug} d`}
+        to={`/${item.node.slug}`}
         key={item.node.frontmatter.title}
         title={item.node.frontmatter.title}
         index={index}
