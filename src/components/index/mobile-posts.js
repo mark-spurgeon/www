@@ -10,6 +10,7 @@ const Container = styled.div`
   flex-wrap: wrap;
   align-items: stretch;
   justify-content: stretch;
+  align-content: stretch;
 
   padding: 0 0 0.5rem 0.5rem;
   margin-bottom: 6rem;
@@ -26,8 +27,8 @@ const Container = styled.div`
 `
 
 const PostLink = styled(Link)`
-  flex: 1 1;
-  height: 9.5rem;
+  flex: 1;
+  min-height: 6rem;
   min-width: 150px;
   margin: 0.5rem 0.5rem 0 0;
   position: relative;
@@ -36,16 +37,13 @@ const PostLink = styled(Link)`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-self: stretch;
 `
 
 const Thumbnail = styled(BackgroundImage)`
   display: block;
   width: 100%;
-  min-height: 5.5rem;
-  ${props => (props.index === 2) ? `
-    overflow: hidden;
-    height: 9.5rem;
-  `: null}
+  height: 100%;
 `
 
 const Headline = styled.h2`
@@ -56,25 +54,19 @@ const Headline = styled.h2`
   font-weight: 400;
   font-size: 0.9rem;
   line-height: 0.9rem;
-  min-height: 3.6rem;
   bottom: 0;
-  ${props => (props.index === 2) ? `
-    position: absolute;
-    bottom: 0;
-    color: ${props.color || 'white'};
-    margin: 0.5rem;
-    margin-bottom: 0.25rem;
-    text-shadow: -0.5px 0.5px 0 ${props.outline},
-    0.5px 0.5px 0 ${props.outline},
-    0.5px -0.5px 0 ${props.outline},
-        -0.5px -0.5px 0 ${props.outline};
-  `: null}
+  position: absolute;
+  bottom: 0;
+  color: ${props => props.color || 'white'};
+  margin: 0.25rem;
+  padding: 0.1rem 0.25rem 0.1rem 0.25rem;
+  background-color: ${props => props.outline || '#ffdab9' };
 `
 
 export default ({ items }) => {
 
   let postList = items.map((item, index) => {
-    let { fluid } = item.node.frontmatter.featuredImage.image
+    let { fluid } = item.node.frontmatter.featuredImage.thumbnail
 
     return (
       <PostLink
@@ -87,8 +79,9 @@ export default ({ items }) => {
             <Thumbnail fluid={fluid} index={index} />
           }
           <Headline 
-            index={index} color={item.node.frontmatter.color || 'black'}
-            outline={item.node.frontmatter.outline || 'transparent'}
+            index={index} 
+            color={item.node.frontmatter.color || 'black'}
+            outline={item.node.frontmatter.outline}
             >
             {item.node.frontmatter.title}
           </Headline>

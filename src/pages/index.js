@@ -134,7 +134,7 @@ export const pageQuery = graphql`
                 }
               }
               thumbnail: childImageSharp {
-                fluid(maxWidth: 1000, maxHeight: 500) {
+                fluid(maxWidth: 300, maxHeight: 200) {
                   ...GatsbyImageSharpFluid
                 }
               }

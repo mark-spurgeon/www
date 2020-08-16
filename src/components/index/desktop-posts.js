@@ -9,6 +9,10 @@ const DesktopPostsContainer = styled.div`
   flex-direction: row;
   align-items: stretch;
   justify-content: stretch;
+
+  @media (max-width: 700px) {
+    display: none;
+  }
 `
 
 const PostCardContainer = styled.div`

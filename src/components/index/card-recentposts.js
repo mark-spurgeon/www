@@ -10,6 +10,10 @@ const PostListContainer = styled.div`
 
   margin-top: 5px;
   overflow-y: auto;
+
+  @media (max-width: 1000px) {
+    display: none;
+  }
 `
 
 const Label = styled.div`
