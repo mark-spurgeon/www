@@ -5,9 +5,9 @@ import { Link } from 'gatsby';
 // import { Helmet } from 'react-helmet';
 import styled from '@emotion/styled';
 import { keyframes } from '@emotion/core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+/*import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFile, faGlobe, faPaperPlane, faPaintBrush } from '@fortawesome/free-solid-svg-icons'
-import { faGithub, faInstagram } from '@fortawesome/free-brands-svg-icons'
+import { faGithub, faInstagram } from '@fortawesome/free-brands-svg-icons'*/
 
 const Container = styled.div`
   display: block;
@@ -197,22 +197,22 @@ export default () => {
 
                 <SocialBox>
                     <Social to="mailto:markspurgeon96@hotmail.com" title="Marko's E-mail">
-                        <FontAwesomeIcon icon={faPaperPlane} /> ⌨ markspurgeon96@hotmail.com
+                        ⌨ markspurgeon96@hotmail.com
                     </Social>
                     <Social to="https://github.com/the-duck" target="_blank" color="rgb(40, 50, 250)" title="Marko's Github" nobg>
-                        <FontAwesomeIcon icon={faGithub} size="lg" title="Github Icon"  />
+                        🤖
                     </Social>
                     <Social to="https://instagram.com/marko.studio" target="_blank" color="rgb(200, 50, 80)" title="Marko's Instagram" nobg>
-                        <FontAwesomeIcon icon={faInstagram} size="lg" title="Instagram Icon" />
+                        🎨
                     </Social>
                 </SocialBox>
 
                 <SeriousBox hovered={hovered}>
                     <SeriousLink to="/cv" title="Marko's CV">
-                        <b><FontAwesomeIcon icon={faFile} title="CV" /> CV & Skills</b>
+                        <b>CV & Skills</b>
                     </SeriousLink>
                     <SeriousLink to="/links" title="Marko's Links" nobg>
-                        <FontAwesomeIcon icon={faGlobe} title="Links" /> Links & references
+                        Links & references
                     </SeriousLink>
                 </SeriousBox>
             </TextContainer>
