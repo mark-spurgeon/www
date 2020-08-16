@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import styled from '@emotion/styled'
 
 import {
     HBox, VBox,
     Button,
-    TextInput,
-    Label,
+    Input,
+    Id,
 } from './ui.js'
 
 const LinkContainer = styled.div`
@@ -20,7 +20,7 @@ const LinkContainer = styled.div`
   border-style: solid;
   border-width: 0;
   border-top-width: 1px;
-  border-color: rgb(50, 50, 50);
+  border-color: #e7be95;
 
   font-family: 'IBM Plex Mono', monospace;
   
@@ -46,71 +46,28 @@ const LinkContainer = styled.div`
       default : 
         return `
           max-height: 0;
+          opacity: 0;
         `;
     }
   }};
   transition: all 0.6s;
 `
 
-const InputContainer = styled.div`
-  flex: 1;
-`
-
-const IdContainer = styled.div`
-  width: 1rem;
-  font-size: 0.6rem;
-  font-weight: bold;
-`
-
-const Input = ({
-  label = 'input',
-  value = '',
-  onChange,
-}) => (
-  <InputContainer>
-    <Label>{label}</Label>
-    <TextInput value={value} onChange={onChange} />
-  </InputContainer>
-)
-
 export default ({
   input,
   index,
   onChange,
 }) => {
-  const [changed, setChanged] = useState(false)
-  const [data, setData] = useState({
-    name: '',
-    type: '',
-    category: '',
-    data: '',
-    tags: '',
-    id: 0,
-  })
-
-  useEffect(() => {
-    setData(input)
-  }, [input])
-
-  useEffect(() => {
-    if (input !== data) {
-      setChanged(true)
-    } else {
-      setChanged(false)
-    }
-  }, [input, data])
 
   const onInput = (item, e) => {
-    let newData = { ...data};
+    let newData = { ...input};
     newData[item] = e.target.value;
     newData.status = (newData.status === 'new') ? 'visible' : newData.status;
-    setData(newData)
+    onChange(newData)
   }
 
   const onDelete = () => {
-    let newData = {...data, status: 'deleted'}
-    setData(newData);
-    
+    let newData = {...input, status: 'deleted'}    
     // Update data
     setTimeout(() => {
       onChange(newData);
@@ -118,21 +75,19 @@ export default ({
   }
 
   return (
-    <LinkContainer key={index} status={data.status} >
+    <LinkContainer key={index} status={input.status} >
       <HBox>
-        <IdContainer>{index}</IdContainer>
-        <VBox>
-          <Input label="title" value={data.name} onChange={(e) => onInput('name', e)}/>
+        <Id>{index}.</Id>
+        <VBox style={{marginRight: 5}}>
+          <Input label="title" value={input.name} onChange={(e) => onInput('name', e)}/>
           <HBox>
-            <Input label="type" value={data.type} onChange={(e) => onInput('type', e)} />
-            <Input label="category" value={data.category} onChange={(e) => onInput('category', e)} />
+            <Input label="type" value={input.type} onChange={(e) => onInput('type', e)} />
+            <Input label="category" value={input.category} onChange={(e) => onInput('category', e)} />
           </HBox>
-          <Input label="link / other data" value={data.data} onChange={(e) => onInput('data', e)} />
-
+          <Input label="link / other data" value={input.data} onChange={(e) => onInput('data', e)} />
         </VBox>
         <VBox style={{maxWidth: '2rem', justifyContent: 'flex-end'}}>
-          <Button onClick={() => onDelete()} title="delete" color="#e2062c" disabled={data.status === 'deleted'} invert>X</Button>
-          <Button onClick={() => onChange(data)} title="update" disabled={!changed || data.status === 'deleted'} color="#42b438">U</Button>
+          <Button onClick={() => onDelete()} title="delete" color="#e2062c" disabled={input.status === 'deleted'} invert>X</Button>
         </VBox>
       </HBox>
     </LinkContainer>

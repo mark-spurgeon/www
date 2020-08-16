@@ -47,20 +47,64 @@ export const Button = styled.button`
   border-style: none;
   background-color: transparent;
 
+  text-align: center;
+
   font-weight: bold;
   font-size: 0.8rem;
   background-color: ${props => props.invert ? 'transparent' : props.color || 'black'};
   color: ${props => props.invert ? props.color || 'white' : 'black'};;
   cursor: pointer;
-  border-radius: 2px;
+  border-radius: 1px;
   border-style: solid;
   border-width: 1px;
   border-color: ${props => props.invert ? 'transparent' : 'black'};;
 
   opacity: ${props => props.disabled ? '0.4' : '1'};
-  &:hover {
-    text-decoration: underline;
-  }
 `
 
-export default () => <div />
+export const TabButton = styled.button`
+  flex: 1;
+  background: ${props => props.selected ? 'rgb(120, 150, 255)' : 'transparent'};
+  border-style: solid;
+  border-width: 1px;
+  border-color: #e7be95;
+
+  padding: 0.5rem;
+  font-family: 'IBM Plex Mono', monospace;
+  cursor: pointer;
+
+  ${props => {
+    switch(props.where) {
+      case 'left': return `
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+        border-right-width: 0;
+      `
+      case 'right': return `
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+      `
+      default: return null;
+    }
+  }}
+`
+
+const InputContainer = styled.div`
+  flex: 1;
+`
+export const Input = ({
+  label = 'input',
+  value = '',
+  onChange,
+}) => (
+  <InputContainer>
+    <Label>{label}</Label>
+    <TextInput value={value} onChange={onChange} />
+  </InputContainer>
+)
+
+export const Id = styled.div`
+  width: 1rem;
+  font-size: 0.6rem;
+  font-weight: 400;
+`
