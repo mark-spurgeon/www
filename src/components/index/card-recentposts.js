@@ -1,5 +1,7 @@
 import React from 'react'
 import styled from '@emotion/styled'
+import { Link } from 'gatsby';
+
 
 const PostListContainer = styled.div`
   width: 14rem;
@@ -21,7 +23,7 @@ const Label = styled.div`
   letter-spacing: 0.04rem;
 `
 
-const Post = styled.a`
+const Post = styled(Link)`
   display: block;
 
   padding-left: 0.5rem;
@@ -41,7 +43,7 @@ const Post = styled.a`
 
 export default ({ items }) => {
   let Posts = items.map(item => (
-    <Post href={'/' + item.node.slug} title={item.node.frontmatter.title} key={item.node.slug}>
+    <Post to={'/' + item.node.slug} title={item.node.frontmatter.title} key={item.node.slug}>
       {item.node.frontmatter.title}
     </Post>
   ));

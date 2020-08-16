@@ -1,13 +1,8 @@
 import React, { useState } from 'react';
 import { css } from '@emotion/core';
 import { Link } from 'gatsby';
-// import { graphql, useStaticQuery } from "gatsby";
-// import { Helmet } from 'react-helmet';
 import styled from '@emotion/styled';
 import { keyframes } from '@emotion/core';
-/*import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFile, faGlobe, faPaperPlane, faPaintBrush } from '@fortawesome/free-solid-svg-icons'
-import { faGithub, faInstagram } from '@fortawesome/free-brands-svg-icons'*/
 
 const Container = styled.div`
   display: block;
@@ -101,9 +96,11 @@ const Description = styled.div`
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.75rem;
     font-weight: 500;
+    font-style: italic;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     margin-top: 0.25rem;
+    color: #483d32;
 `
 
 const SocialBox = styled.div`
@@ -113,6 +110,7 @@ const SocialBox = styled.div`
 const Social = styled(Link)`
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.75rem;
+    text-decoration: none;
     background-color: ${props => props.nobg ? 'transparent' : '#FECD9A'};
     padding: 0.15rem 0.6rem 0.15rem 0.6rem;
     border-radius: 0.75rem;
@@ -171,7 +169,9 @@ const SeriousLink = styled(Link)`
     padding: 0.15rem 0.6rem 0.15rem 0.6rem;
     animation: ${props => props.nobg ? null : LinkAnimation} 4s ease infinite;
     color: ${props => props.nobg ? 'black': 'white'};
-
+    &:hover {
+        text-decoration: underline;
+    }
 
 `
 
@@ -197,7 +197,7 @@ export default () => {
 
                 <SocialBox>
                     <Social to="mailto:markspurgeon96@hotmail.com" title="Marko's E-mail">
-                        ⌨ markspurgeon96@hotmail.com
+                        markspurgeon96@hotmail.com
                     </Social>
                     <Social to="https://github.com/the-duck" target="_blank" color="rgb(40, 50, 250)" title="Marko's Github" nobg>
                         🤖
@@ -209,7 +209,7 @@ export default () => {
 
                 <SeriousBox hovered={hovered}>
                     <SeriousLink to="/cv" title="Marko's CV">
-                        <b>CV & Skills</b>
+                        CV & Skills
                     </SeriousLink>
                     <SeriousLink to="/links" title="Marko's Links" nobg>
                         Links & references

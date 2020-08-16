@@ -28,7 +28,8 @@ const Container = styled.div`
 const Header = styled.div`
   flex: 1;
   max-height: 2rem;
-  background: #ffdab9;
+  background: #27211c;
+  color: white;
   font-family: 'IBM Plex Mono';
   line-height: 2rem;
   display: flex;
@@ -120,13 +121,19 @@ export const pageQuery = graphql`
         node {
           frontmatter {
             title
+            description
             date
             featured
             authors
             color
             outline
             featuredImage {
-              childImageSharp {
+              image: childImageSharp {
+                fluid(maxWidth: 1000, maxHeight: 500) {
+                  ...GatsbyImageSharpFluid
+                }
+              }
+              thumbnail: childImageSharp {
                 fluid(maxWidth: 1000, maxHeight: 500) {
                   ...GatsbyImageSharpFluid
                 }

@@ -74,11 +74,11 @@ const Headline = styled.h2`
 export default ({ items }) => {
 
   let postList = items.map((item, index) => {
-    let { fluid } = item.node.frontmatter.featuredImage.childImageSharp
+    let { fluid } = item.node.frontmatter.featuredImage.image
 
     return (
       <PostLink
-        to={item.node.slug}
+        to={`/${item.node.slug} d`}
         key={item.node.frontmatter.title}
         title={item.node.frontmatter.title}
         index={index}

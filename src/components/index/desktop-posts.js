@@ -22,12 +22,16 @@ const PostCardContainer = styled.div`
 `
 
 const ColorDiv = styled.div`
-    label: color-div;
-    display: block;
+  label: color-div;
+  display: block;
 
-    height: 5px;
-    background-color: ${props => props.color};
-  
+  height: 4px;
+  background-color: ${props => props.color};  
+  border-style: solid;
+  border-width: 1px;
+  border-bottom-width: 0;
+  border-color: ${props => props.hovered ? '#bf9971' : props.color};  
+
   transition: all .3s;
   ${props => props.hovered ? `
     height: 7px;
@@ -61,25 +65,43 @@ const CardBox = styled(Link)`
     ` : null}
 `
 
-const Title = styled.div`
+const TextContainer = styled.div`
   display: block;
   height: 100%;
+  border-width: 0;
+  border-left-width: 1px;
+  border-right-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  transition: all .4s;
+  ${props => props.hovered ? `
+    border-color: #e7be95;
+  ` : null}
+`
+
+const Title = styled.div`
     font-family: 'IBM Plex Mono', monospace;
     font-weight: 400;
-    font-size: 1.1rem;
+    font-size: 1rem;
     line-height: 1;
     padding: 0.5rem;
+    padding-bottom: 0;
+    transition: all .2s;
     color: ${props => props.hovered ? 'black' : props.color};
+`
 
-    border-width: 0;
-    border-left-width: 1px;
-    border-right-width: 1px;
-    border-style: solid;
-    border-color: transparent;
-    transition: all .4s;
-    ${props => props.hovered ? `
-      border-color: #e7be95;
-    ` : null}
+const Description = styled.div`
+  display: block;
+  height: 100%;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 500;
+  font-size: 0.7rem;
+  font-style: italic;
+  line-height: 1.25;
+  padding: 0.5rem;
+  padding-bottom: 0;
+  transition: all .4s;
+  color: ${props => props.hovered ? '#e7be95' : '#6d5b49'};
 `
 
 const PostCard = ({
@@ -88,7 +110,9 @@ const PostCard = ({
     href,
 }) => {
   const [hovered, setHovered] = useState(false);
-  
+  if (frontmatter.description) {
+    console.log(frontmatter.description, frontmatter.title.length)
+  }
   return (
         <PostCardContainer>
             <CardBox
@@ -98,14 +122,19 @@ const PostCard = ({
                 onMouseEnter={() => {
                   setHovered(true)
                   onHover({
-                    image: frontmatter.featuredImage.childImageSharp.fluid,
+                    image: frontmatter.featuredImage.image.fluid,
                   })
                 }}
                 onMouseLeave={() => setHovered(false)}
                 hovered={hovered}
                 >
                 <ColorDiv color={frontmatter.color} hovered={hovered} />
-                <Title color={frontmatter.color} hovered={hovered}>{frontmatter.title}</Title>
+                <TextContainer hovered={hovered}>
+                  <Title color={frontmatter.color} hovered={hovered}>{frontmatter.title}</Title>
+                  { frontmatter.title.length <= 18 && frontmatter.description &&  
+                    <Description hovered={hovered}>{frontmatter.description}</Description>
+                  }
+                </TextContainer>
             </CardBox>
         </PostCardContainer>
   )

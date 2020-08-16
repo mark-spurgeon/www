@@ -1,16 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { Link } from 'gatsby'
 import styled from '@emotion/styled'
 import useSwr from 'swr'
 
 const fetcher = (...args) => fetch(...args).then(res => res.json())
 
-const Menu = styled.button`
+const Menu = styled(Link)`
   font-family: 'IBM Plex Mono', monospace;
   font-size: 1rem;
   max-height: 2rem;
   line-height: 2rem;
 
   background: inherit;
+  color: #e7be95;
+  text-decoration: none;
   border-style: solid;
   border-width: 0;
   padding: 0;
@@ -20,7 +23,7 @@ const Menu = styled.button`
   transition: all .4s;
 
   &:hover {
-    background: #ffab61;
+    background: #483d32;
   }
 `
 
@@ -35,7 +38,7 @@ const ListContainer = styled.div`
 `
 
 const LinkSeparator = styled.span`
-  color: black;
+  color: #cca57d;
   font-weight: 300;
 `
 
@@ -50,8 +53,8 @@ const StyledLink = styled.a`
       case 'economy':
         return 'blue'
       case 'other':
-        return 'black';
-      default : return 'black'
+        return '#ffe5bb';
+      default : return '#ffe5bb'
     }
   }};
 
@@ -60,7 +63,7 @@ const StyledLink = styled.a`
   }
 `
 
-const Link = ({
+const ExternalLink = ({
   name,
   data,
   category,
@@ -107,11 +110,11 @@ export default () => {
     return () => clearInterval(interval);
   }, []);
 
-  let linkListItems = links.map((data, index) => <Link {...data} key={data.data} separator={(index !== 0)} />)
+  let linkListItems = links.map((data, index) => <ExternalLink {...data} key={data.data} separator={(index !== 0)} />)
   
   return (
     <>
-      <Menu>Links <LinkSeparator>/</LinkSeparator></Menu>
+      <Menu to="/links" title="Links">Links <LinkSeparator>/</LinkSeparator></Menu>
       <ListContainer ref={listContainer} onMouseEnter={() => hover.current = true} onMouseLeave={() => hover.current = false}>
         { links ? linkListItems : '...' }
       </ListContainer>
