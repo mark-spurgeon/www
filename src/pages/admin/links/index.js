@@ -22,7 +22,8 @@ const defaultLink = {
 }
 
 const defaultCategory = {
-  id: 'untitled',
+  id: 0,
+  slug: 'untitled',
   name: 'Untitled',
   order: 4,
   colour: 'green'
@@ -160,6 +161,7 @@ export default () => {
     let newCategory = {
       ...defaultCategory,
       order: data.categories.length,
+      id: Date.now(),
     }
 
     let newData = {

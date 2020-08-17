@@ -34,6 +34,7 @@ const Heading = styled.div`
   font-size: 1.4rem;
   font-weight: 300;
   text-align: center;
+  color: #947a61;
 `
 
 const Description = styled.div`
@@ -43,6 +44,7 @@ const Description = styled.div`
   font-style: italic;
   margin-bottom: 1rem;
   max-width: 27rem;
+  color: #947a61;
 `
 
 const Legend = styled.div`
@@ -99,7 +101,6 @@ const ALink = styled.a`
 const LinkBox = ({
   data,
 }) => {
-  console.log('linkbox', data)
   let { news, links } = data.links;
   
   let newsList = news.map(item => (
@@ -132,18 +133,19 @@ function useLinks () {
   const sourceLinks = (!error && data && data.status === 'ok') ? data.items : [];
   const sourceCategories = (!error && data && data.status === 'ok') ? data.categories.sort((a,b) => a.order - b.order) : [];
   /* Restructure */
-  let linkSections = sourceCategories.map((category) => ({
+  let linkCategories = sourceCategories.map((category) => ({
     ...category,
     links: {
-      news: sourceLinks.filter(link => (link.category === category.id && link.type === 'news')).sort((a, b) => b.id - a.id),
-      links: sourceLinks.filter(link => (link.category === category.id && link.type === 'link')).sort((a, b) => b.id - a.id),
+      news: sourceLinks.filter(link => (link.category === category.slug && link.type === 'news')).sort((a, b) => b.id - a.id),
+      links: sourceLinks.filter(link => (link.category === category.slug && link.type === 'link')).sort((a, b) => b.id - a.id),
     }
-  })) 
+  }))
+  // filter the categories that have links or not
+  let linkSections = linkCategories.filter(category =>  category.links.news.length > 0 || category.links.links.length > 0)
   return { linkSections }
 }
 
 export default () => {
-  const [data, setData] = useState(null)
   const { linkSections } = useLinks()
 
   const linkBoxes = linkSections.map(data => <LinkBox data={data} key={data.id} />)

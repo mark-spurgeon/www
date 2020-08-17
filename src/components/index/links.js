@@ -46,17 +46,7 @@ const StyledLink = styled.a`
   margin-right: 0.5rem;
   white-space: nowrap;
   text-decoration: none;
-  color: ${props => {
-    switch (props.category) {
-      case 'urbanism':
-        return '#71bc78';
-      case 'economy':
-        return 'blue'
-      case 'other':
-        return '#ffe5bb';
-      default : return '#ffe5bb'
-    }
-  }};
+  color: ${props => props.category.colour || '#ffdab9'};
 
   &:hover {
     text-decoration: underline;
@@ -77,32 +67,39 @@ const ExternalLink = ({
 
 function useLinks () {
   const { data, error } = useSwr('/api/links', fetcher)
-  const sourceLinks = (!error && data && data.status === 'ok') ? data.items : [];
-  /* Reorder / Filter */
-  const links = sourceLinks.filter(l => l.type === 'news')
+  let sourceLinks = [];
+  let sourceCategories = [];
+  if (!error && data && data.status === 'ok')  {
+    sourceLinks = data.items
+    sourceCategories = data.categories
+  }
+  /* Insert full category details to link */
+  const links = sourceLinks.filter(l => l.type === 'news').map(link => {
 
-  return { links }
+    return {
+      ...link,
+      category: sourceCategories.filter(cat => cat.slug === link.category)[0]
+    }
+  })
+
+  return { links, categories: sourceCategories }
 }
 
 export default () => {
   const hover = useRef('hover')
   const scroll = useRef('scroll')
   const listContainer = useRef('listContainer')
-  const { links } = useLinks()
+  const { links, categories } = useLinks()
 
   useEffect(() => {
     const interval = setInterval(() => {
-
       if (links && !hover.current) {
         const { scrollLeft } = listContainer.current;
-        
         if (scrollLeft > scroll.current || scrollLeft === 0) {
           listContainer.current.scrollBy({left: 20, behavior: 'smooth'})
-          // listContainer.current.scrollLeft += 20;
         } else {
           listContainer.current.scrollTo({left: 0, behavior: 'smooth'})
         }
-        
         scroll.current = scrollLeft
       }
     }, 250);

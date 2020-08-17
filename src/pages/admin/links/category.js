@@ -48,7 +48,7 @@ export default ({
         <VBox style={{marginRight: 5}}>
           <HBox>
             <Input label="name" value={input.name || ''} onChange={(e) => onInput('name', e)}/>
-            <Input label="id" value={input.id || ''} onChange={(e) => onInput('id', e)}/>
+            <Input label="slug" value={input.slug || ''} onChange={(e) => onInput('slug', e)}/>
           </HBox>
           <HBox>
             <Input label="colour" value={input.colour || '' } onChange={(e) => onInput('colour', e)} />
