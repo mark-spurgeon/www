@@ -77,7 +77,7 @@ const ExternalLink = ({
 
 function useLinks () {
   const { data, error } = useSwr('/api/links', fetcher)
-  const sourceLinks = (!error && data && data.status === 'ok') ? data.results : [];
+  const sourceLinks = (!error && data && data.status === 'ok') ? data.items : [];
   /* Reorder / Filter */
   const links = sourceLinks.filter(l => l.type === 'news')
 

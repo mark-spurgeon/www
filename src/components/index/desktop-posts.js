@@ -114,9 +114,7 @@ const PostCard = ({
     href,
 }) => {
   const [hovered, setHovered] = useState(false);
-  if (frontmatter.description) {
-    console.log(frontmatter.description, frontmatter.title.length)
-  }
+  
   return (
         <PostCardContainer>
             <CardBox
