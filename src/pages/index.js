@@ -123,6 +123,7 @@ export const pageQuery = graphql`
             title
             description
             date
+            status
             featured
             authors
             color

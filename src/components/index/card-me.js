@@ -66,7 +66,7 @@ const LogoContainer = styled.div`
     @media (max-width: 600px) {
       max-height: 4rem;
     }
-    background: rgb(240, 30, 80);
+    background: #05668d;
 `
 
 const TextContainer = styled.div`

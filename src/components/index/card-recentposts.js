@@ -47,7 +47,11 @@ const Post = styled(Link)`
 
 export default ({ items }) => {
   let Posts = items.map(item => (
-    <Post to={'/' + item.node.slug} title={item.node.frontmatter.title} key={item.node.slug}>
+    <Post 
+      to={'/' + item.node.slug}
+      title={(item.node.frontmatter.status === 'wip') ? `${item.node.frontmatter.title} [WIP]`: item.node.frontmatter.title}
+      key={item.node.slug} >
+      {item.node.frontmatter.status === 'wip' && '🚧 '}
       {item.node.frontmatter.title}
     </Post>
   ));
