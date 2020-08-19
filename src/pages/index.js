@@ -87,8 +87,14 @@ const Index = ({
 }) => {
   const [image, setImage] = useState(null);
 
-  let featuredPosts = data.posts.edges.filter(i => i.node.frontmatter.featured === true)
-  let otherPosts = data.posts.edges.filter(i => !i.node.frontmatter.featured)
+  const featuredPosts = data.posts.edges.filter(i => i.node.frontmatter.status === 'featured')
+  const otherPosts = data.posts.edges.filter(i => {
+    const isNotFeatured = i.node.frontmatter.status !== 'featured'
+    const isNotHidden = i.node.frontmatter.status !== 'hidden'
+    const isNotWIPHidden = i.node.frontmatter.status !== 'wip-hidden'
+    
+    return (isNotFeatured && isNotHidden && isNotWIPHidden)
+  })
 
   return (
     <Container>
@@ -124,16 +130,18 @@ export const pageQuery = graphql`
             description
             date
             status
-            featured
+            featured # DEPRECIATED 
             authors
             color
             outline
             featuredImage {
+              # Big Image
               image: childImageSharp {
                 fluid(maxWidth: 1000, maxHeight: 500) {
                   ...GatsbyImageSharpFluid
                 }
               }
+              # Mobile thumbnail
               thumbnail: childImageSharp {
                 fluid(maxWidth: 300, maxHeight: 200) {
                   ...GatsbyImageSharpFluid
