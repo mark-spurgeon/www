@@ -58,7 +58,7 @@ export default ({ items }) => {
   
   return (
     <PostListContainer>
-      <Label>Browse posts</Label>
+      <Label>Other posts</Label>
       {Posts}
     </PostListContainer>
   )

@@ -67,6 +67,5 @@ module.exports = {
         trackingId: "UA-174950041-1",
       },
     },
-    "gatsby-plugin-webpack-bundle-analyser-v2"
   ],
 };

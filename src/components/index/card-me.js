@@ -19,8 +19,6 @@ const hoveredStyles = css`
   height: 100%;
   border-bottom-width: 0;
   border-color: #f0cbab;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
   box-shadow: 0 0 4px 4px rgb(50, 50, 50, 0.04);
 `
 
@@ -54,19 +52,24 @@ const MeCard = styled.div`
     @media (max-width: 600px) {
         width: 100%;
         ${hoveredStyles};
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
     }
 `
 
 const LogoContainer = styled.div`
     transition: all .3s;
-    max-height: ${props => props.hovered ? '4rem': '0.3rem'};
+    max-height: ${props => props.hovered ? '4rem': '4px'};
     height: 4rem;
     @media (max-width: 600px) {
       max-height: 4rem;
     }
-    background: #05668d;
+    /*background: #05668d;*/
+    border-style: solid;
+    border-width: 1px;
+    border-bottom-width: 0;
+    border-color: ${props => props.hovered ? '#cca57d': 'transparent'};
+    @media (max-width: 600px) {
+        border-color: transparent;
+    }
 `
 
 const TextContainer = styled.div`
