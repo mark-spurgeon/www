@@ -1,18 +1,19 @@
 import React from 'react'
 import styled from '@emotion/styled'
+import Select from 'react-select'
 
 import {
     HBox, VBox,
     Button,
     Input,
     Id,
+    SelectInput,
 } from './ui.js'
 
 const LinkContainer = styled.div`
   display: block;
   width: 100%;
   max-width: 28rem;
-  overflow: hidden;
 
   margin: 0 auto;
   padding: 0.5rem;
@@ -30,6 +31,7 @@ const LinkContainer = styled.div`
         return `
           background-color: #bce2b1;
           max-height: 28rem;
+          overflow: hidden;
         `;
       case 'deleted':
         return `
@@ -38,10 +40,12 @@ const LinkContainer = styled.div`
           padding: 0 0.5rem 0 0.5rem;
           border-width: 0;
           max-height: 0;
+          overflow: hidden;
         `;
       case 'visible':
         return `
           max-height: 28rem;
+          overflow: visible;
         `
       default : 
         return `
@@ -57,11 +61,19 @@ export default ({
   input,
   index,
   onChange,
+  categoryOptions = [],
 }) => {
 
   const onInput = (item, e) => {
     let newData = { ...input};
     newData[item] = e.target.value;
+    newData.status = (newData.status === 'new') ? 'visible' : newData.status;
+    onChange(newData)
+  }
+
+  const onSelectInput = (item, e) => {
+    let newData = { ...input};
+    newData[item] = e;
     newData.status = (newData.status === 'new') ? 'visible' : newData.status;
     onChange(newData)
   }
@@ -80,14 +92,16 @@ export default ({
         <Id>{index}.</Id>
         <VBox style={{marginRight: 5}}>
           <Input label="title" value={input.name} onChange={(e) => onInput('name', e)}/>
+          <Input label="link" value={input.data} onChange={(e) => onInput('data', e)} />
           <HBox>
             <Input label="type" value={input.type} onChange={(e) => onInput('type', e)} />
-            <Input label="category" value={input.category} onChange={(e) => onInput('category', e)} />
+            <SelectInput label="category" options={categoryOptions} value={input.category} onChange={(e) => onSelectInput('category', e)} />
           </HBox>
-          <Input label="link / other data" value={input.data} onChange={(e) => onInput('data', e)} />
         </VBox>
-        <VBox style={{maxWidth: '2rem', justifyContent: 'flex-end'}}>
-          <Button onClick={() => onDelete()} title="delete" color="#e2062c" disabled={input.status === 'deleted'} invert>X</Button>
+        <VBox style={{maxWidth: '4rem', justifyContent: 'flex-start'}}>
+          <Button onClick={() => onDelete()} title="delete" color="#e2062c" disabled={input.status === 'deleted'}>
+            Delete
+          </Button>
         </VBox>
       </HBox>
     </LinkContainer>

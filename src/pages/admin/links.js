@@ -5,12 +5,12 @@ import Helmet from 'react-helmet'
 import Head from '.../../components/head'
 import Footer from '.../../components/footer'
 
-import Heading from './heading'
-import Authenticator from './authenticator'
-import Link from './link'
-import Category from './category'
+import Heading from '.../../components/admin/links/heading'
+import Authenticator from '.../../components/admin/links/authenticator'
+import Link from '.../../components/admin/links/link'
+import Category from '.../../components/admin/links/category'
 
-import { Button, TabButton } from './ui.js'
+import { Button, TabButton } from '.../../components/admin/links/ui.js'
 
 const defaultLink = {
   id: 0,
@@ -32,8 +32,8 @@ const defaultCategory = {
 export default () => {
   const [uiEditor, setUiEditor] = useState('links')
   const [uiDataChanged, setUiDataChanged] = useState(false)
+  const [uiCategoryOptions, setUiCategoryOptions] = useState([])
   const [authToken, setAuthToken] = useState(null)
-  const [updateMessage, setUpdateMessage] = useState('')
   const [initialData, setInitialData] = useState([])
   const [data, setData] = useState([])
 
@@ -69,6 +69,19 @@ export default () => {
   }, [initialData, data])
 
   /**
+   * On categories
+   */
+  useEffect(() => {
+    if (data && data.categories) {
+      let categoryOptions = data.categories.map(cat => ({
+        value: cat.slug,
+        label: cat.name,
+      }))
+      setUiCategoryOptions(categoryOptions)
+    }
+  }, [data])
+
+  /**
    * Upload data to Github
    * @param {*} newData 
    */
@@ -88,7 +101,7 @@ export default () => {
           owner: 'the-duck',
           repo: 'databases',
           path: 'links.json',
-          message: updateMessage || `Update from website [general]`,
+          message: `Update from website [general]`,
           content: Buffer.from(JSON.stringify(newData, null, 2)).toString("base64"),
           sha: data.sha,
           committer: {
@@ -182,7 +195,12 @@ export default () => {
   if (data && data.items) {
     Links = data.items.map((link, index) => { 
       return (link.status === 'visible' || link.status === 'new') ? (
-        <Link input={link} index={index} key={link.id} onChange={onUpdatedLink} />
+        <Link 
+          input={link}
+          index={index}
+          key={link.id}
+          onChange={onUpdatedLink}
+          categoryOptions={uiCategoryOptions} />
       ) : null;
     })
   }
@@ -193,7 +211,11 @@ export default () => {
   let Categories
   if (data && data.categories) {
     Categories = data.categories.map((category, index) => (
-      <Category input={category} index={index} key={category.id} onChange={onUpdatedCategory} />
+      <Category
+        input={category}
+        index={index}
+        key={category.id}
+        onChange={onUpdatedCategory} />
     ))
   }
 
@@ -201,45 +223,46 @@ export default () => {
     <main style={{ padding: '0.5rem' }}>
       <Helmet>
         <Head />
-        <title>MKO ADMIN / Links</title>
+        <title>Admin / Marko's Links</title>
         <meta name="robots" content="noindex"></meta>
       </Helmet>
       <Heading>
-        Marko's Links & References
-        { authToken &&
-          <div style={{display: 'flex', flexDirection: 'row'}}>
-            <Button
-              title="Update All"
-              onClick={() => uploadData(data)}
-              disabled={!uiDataChanged} 
-              color="#42b438"
-              style={{marginRight: '0.25rem'}}
-              >
-              🔨
-            </Button>
-            <Button 
-              title={`New item in ${uiEditor}`}
-              color="transparent"
-              onClick={() => uiEditor === 'categories' ? onNewCategory() : onNewLink()}>  
-            📮
-            </Button>
-          </div>
-        }
+        <span style={{color: '#5679de'}}>Admin /</span> Marko's Links
       </Heading>
-      <Heading>
-          <TabButton
-            onClick={() => setUiEditor('categories')} 
-            where='left'
-            selected={uiEditor === 'categories'} >
-            Categories
-          </TabButton>
-          <TabButton
-            onClick={() => setUiEditor('links')}
-            where='right'
-            selected={uiEditor === 'links'} >
-            Links
-          </TabButton>
-      </Heading>
+
+      { authToken &&
+        <>
+        <Heading>
+            <TabButton
+              onClick={() => setUiEditor('categories')} 
+              where='left'
+              selected={uiEditor === 'categories'} >
+              Categories
+            </TabButton>
+            <TabButton
+              onClick={() => setUiEditor('links')}
+              where='right'
+              selected={uiEditor === 'links'} >
+              Links
+            </TabButton>
+        </Heading>
+        <Heading>
+          <Button 
+            title={`New item in ${uiEditor}`}
+            onClick={() => uiEditor === 'categories' ? onNewCategory() : onNewLink()}>  
+          + New {uiEditor === 'categories' ? 'category' : 'link'}
+          </Button>
+          <Button
+            title="Update All"
+            onClick={() => uploadData(data)}
+            disabled={!uiDataChanged} 
+            color="#42b438"
+            invert>
+            Update
+          </Button>
+        </Heading>
+        </>
+      }
       
       { authToken ? (uiEditor === 'links' ? Links : Categories) : <Authenticator onAuth={setAuthToken} /> }
       <Footer />
