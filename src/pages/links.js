@@ -5,20 +5,22 @@ import useSwr from 'swr'
 import Head from '../components/head'
 import Footer from '../components/footer'
 import { Square } from '../components/legend'
+
 const fetcher = (...args) => fetch(...args).then(res => res.json())
 
 const Body = styled.div`
   position: absolute;
+  top: 0;
+  left: 0;
   height: 100%;
   width: 100%;
-  display: flex;
-  flex-direction: column;
+  display: flex; 
+  flex-direction: row;
   justify-content: center;
-  align-items: center;
-  background: red;
-  background: #27211c;
-  color: #e7be95;
+
   font-family: 'IBM Plex Mono', monospace;
+  background: #27211c;
+  color: #947a61;
 `
 
 const Container = styled.main`
@@ -35,6 +37,12 @@ const Heading = styled.div`
   font-weight: 300;
   text-align: center;
   color: #947a61;
+  transition: all .2s;
+  @media (max-width: 500px) {
+    width: 100%;
+    padding-left: 3rem;
+    text-align: left;
+  }
 `
 
 const Description = styled.div`
@@ -43,13 +51,22 @@ const Description = styled.div`
   text-align: center;
   font-style: italic;
   margin-bottom: 1rem;
-  max-width: 27rem;
+  max-width: 24rem;
   color: #947a61;
+  @media (max-width: 600px) {
+    display: none;
+  }
 `
 
 const Legend = styled.div`
   display: flex;
   flex-direction: row;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-style: solid;
+  border-width: 0;
+  border-top-width: 1px;
+  border-color: #947a61;
 `
 
 const BoxesContainer = styled.div`
@@ -89,7 +106,7 @@ const TypeContainer = styled.div`
 
 const ALink = styled.a`
   display: block;
-  color: ${props => props.color || '#e7be95'};
+  color: ${props => props.color || '#ffe5bb'};
   font-size: 1rem;
   padding: 0.25rem 0.5rem 0.25rem 0.5rem;
   text-decoration: none;
@@ -155,7 +172,7 @@ export default () => {
       <Container>
         <Head />
         <Heading>Marko's Links</Heading>
-        <Description>A list of all things that sparked my attention, some good news sources and online tools.</Description>
+        <Description>A list of all things that sparked my attention on the web, plus some useful (re)sources.</Description>
         <BoxesContainer>
           {(linkSections.length > 0) ? linkBoxes : '...'}
         </BoxesContainer>
