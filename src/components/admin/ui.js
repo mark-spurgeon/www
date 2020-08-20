@@ -2,6 +2,21 @@ import React, { useState, useEffect } from 'react'
 import styled from '@emotion/styled'
 import Select from 'react-select'
 
+export const Heading = styled.div`
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.2rem;
+  font-weight: 400;
+
+  width: 100%;
+  max-width: 28rem;
+  margin: 0 auto;
+  margin-bottom: 0.5rem;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+`
+
 export const Label = styled.div`
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.6rem;
@@ -48,7 +63,7 @@ export const Button = styled.button`
   font-weight: 400;
   font-size: 0.8rem;
   text-align: center;
-  border-radius: 4px;
+  border-radius: 3px;
   border-style: solid;
   border-width: 1px;
   border-color: ${props => props.invert ? 'transparent' : '#e7be95'};

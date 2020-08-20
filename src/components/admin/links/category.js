@@ -5,7 +5,7 @@ import {
   HBox, VBox,
   Input,
   Id,
-} from './ui.js'
+} from '../ui.js'
 
 const CategoryContainer = styled.div`
   display: block;

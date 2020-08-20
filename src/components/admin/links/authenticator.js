@@ -7,7 +7,7 @@ import {
   TextInput,
   HBox, 
   Button,
-} from './ui.js'
+} from '../ui.js'
 
 const AuthContainer = styled.div`
   width: 100%;
@@ -78,7 +78,7 @@ export default ({
         cookieChecked && 
           <HBox>
             <TextInput value={passCode} onChange={(e) => setPassCode(e.target.value)} type="password" placeholder="You need to know the secret word"/>
-            <Button title="authenticate" color="#edbe00" onClick={() => authenticate()}>A</Button>
+            <Button title="authenticate" color="#319177" onClick={() => authenticate()}>Auth</Button>
           </HBox>
       }
       <Label color="#e2062c">{message}</Label>

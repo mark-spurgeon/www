@@ -5,12 +5,11 @@ import Helmet from 'react-helmet'
 import Head from '.../../components/head'
 import Footer from '.../../components/footer'
 
-import Heading from '.../../components/admin/links/heading'
 import Authenticator from '.../../components/admin/links/authenticator'
 import Link from '.../../components/admin/links/link'
 import Category from '.../../components/admin/links/category'
 
-import { Button, TabButton } from '.../../components/admin/links/ui.js'
+import { Heading, Button, TabButton } from '.../../components/admin/ui.js'
 
 const defaultLink = {
   id: 0,
@@ -227,7 +226,7 @@ export default () => {
         <meta name="robots" content="noindex"></meta>
       </Helmet>
       <Heading>
-        <span style={{color: '#5679de'}}>Admin /</span> Marko's Links
+        <span style={{color: '#5679de'}}>Admin /</span> Links
       </Heading>
 
       { authToken &&

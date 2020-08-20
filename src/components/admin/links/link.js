@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from '@emotion/styled'
-import Select from 'react-select'
 
 import {
     HBox, VBox,
@@ -8,7 +7,7 @@ import {
     Input,
     Id,
     SelectInput,
-} from './ui.js'
+} from '../ui.js'
 
 const LinkContainer = styled.div`
   display: block;
