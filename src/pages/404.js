@@ -55,7 +55,7 @@ export default ({
         <meta name="robots" content="noindex"></meta>
       </Helmet>
       <Box>
-        <Heading>404 Error</Heading>
+        <Heading>404 - Page not found</Heading>
         <p>This is not what you've been looking for.. Sorry !</p>
         <p>Is it one of these links ?</p>
         {posts}
