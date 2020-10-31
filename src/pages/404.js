@@ -46,7 +46,7 @@ export default ({
     }
   }
 }) => {
-  let posts = edges.map(item => <PostLink to={`/${item.node.slug}`}>{item.node.frontmatter.title}</PostLink>)
+  let posts = edges.map(item => <PostLink to={`/${item.node.slug}`}>{item.node.frontmatter && item.node.frontmatter.title}</PostLink>)
   return (
     <Container>
       <Helmet>

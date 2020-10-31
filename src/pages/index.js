@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useStaticQuery, graphql } from "gatsby";
+import { graphql } from "gatsby";
 import styled from '@emotion/styled';
 import BackgroundImage from 'gatsby-background-image'
 
@@ -87,11 +87,12 @@ const Index = ({
 }) => {
   const [image, setImage] = useState(data.homeImage.childImageSharp.fluid);
 
-  const featuredPosts = data.posts.edges.filter(i => i.node.frontmatter.status === 'featured')
+  const featuredPosts = data.posts.edges.filter(i => i.node.frontmatter && i.node.frontmatter.status === 'featured')
   const otherPosts = data.posts.edges.filter(i => {
-    const isNotFeatured = i.node.frontmatter.status !== 'featured'
-    const isNotHidden = i.node.frontmatter.status !== 'hidden'
-    const isNotWIPHidden = i.node.frontmatter.status !== 'wip-hidden'
+    console.log(i)
+    const isNotFeatured = i.node.frontmatter && i.node.frontmatter.status !== 'featured'
+    const isNotHidden = i.node.frontmatter && i.node.frontmatter.status !== 'hidden'
+    const isNotWIPHidden = i.node.frontmatter && i.node.frontmatter.status !== 'wip'
     
     return (isNotFeatured && isNotHidden && isNotWIPHidden)
   })

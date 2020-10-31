@@ -14,4 +14,11 @@ collections:
       - { name: path, label: Path }
       - { name: date, label: Date, widget: datetime }
       - { name: title, label: Title }
+      - { name: description, label: Description }
+      - { name: color, label: Color, widget: color, allowInput: true}
+      - name: status
+        label: Status
+        widget: select
+        options: ["wip", "hidden", "visible", "featured"]
+        default: "featured"
       - { name: body, label: Body, widget: markdown }
