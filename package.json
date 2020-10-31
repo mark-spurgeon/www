@@ -33,17 +33,19 @@
     "gatsby-plugin-loadable-components-ssr": "^2.1.0",
     "gatsby-plugin-manifest": "^2.4.23",
     "gatsby-plugin-mdx": "^1.2.34",
+    "gatsby-plugin-netlify-cms": "^4.3.17",
     "gatsby-plugin-page-creator": "^2.3.22",
     "gatsby-plugin-react-helmet": "^3.3.10",
     "gatsby-plugin-sharp": "^2.6.27",
     "gatsby-remark-images": "^3.3.25",
     "gatsby-source-filesystem": "^2.3.24",
     "gatsby-transformer-json": "^2.4.11",
-    "gatsby-transformer-sharp": "^2.5.13"
+    "gatsby-transformer-sharp": "^2.5.13",
+    "netlify-cms-app": "^2.13.1"
   },
   "scripts": {
     "dev": "gatsby develop",
-    "build": "gatsby build",
+    "build": "GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES=true gatsby build",
     "clean": "gatsby clean",
     "serve": "gatsby serve"
   }

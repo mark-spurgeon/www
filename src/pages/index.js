@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { graphql } from "gatsby";
+import { useStaticQuery, graphql } from "gatsby";
 import styled from '@emotion/styled';
 import BackgroundImage from 'gatsby-background-image'
 
@@ -85,7 +85,7 @@ const Navigation = styled.div`
 const Index = ({
   data
 }) => {
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(data.homeImage.childImageSharp.fluid);
 
   const featuredPosts = data.posts.edges.filter(i => i.node.frontmatter.status === 'featured')
   const otherPosts = data.posts.edges.filter(i => {
@@ -122,6 +122,14 @@ export default Index;
 
 export const pageQuery = graphql`
   query {
+    homeImage : file(relativePath: {eq: "parcs.jpg"}) {
+      id
+      childImageSharp {
+        fluid(maxWidth: 1200, maxHeight: 500) {
+          ...GatsbyImageSharpFluid
+        }
+      }
+    }
     posts : allMdx(sort: {fields: [frontmatter___date], order: DESC}) {
       edges {
         node {
