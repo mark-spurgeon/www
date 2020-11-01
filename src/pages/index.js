@@ -89,7 +89,6 @@ const Index = ({
 
   const featuredPosts = data.posts.edges.filter(i => i.node.frontmatter && i.node.frontmatter.status === 'featured')
   const otherPosts = data.posts.edges.filter(i => {
-    console.log(i)
     const isNotFeatured = i.node.frontmatter && i.node.frontmatter.status !== 'featured'
     const isNotHidden = i.node.frontmatter && i.node.frontmatter.status !== 'hidden'
     const isNotWIPHidden = i.node.frontmatter && i.node.frontmatter.status !== 'wip'
