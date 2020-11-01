@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { css } from '@emotion/core';
 import { Link } from 'gatsby';
 import styled from '@emotion/styled';
-import { keyframes } from '@emotion/core';
+import {  css, keyframes } from '@emotion/core';
+
+import mkoLogo from '../../media/mko-small.svg'
 
 const Container = styled.div`
   display: block;
@@ -56,6 +57,8 @@ const MeCard = styled.div`
 `
 
 const LogoContainer = styled.div`
+    position: relative;
+    overflow: hidden;
     transition: all .3s;
     max-height: ${props => props.hovered ? '4rem': '4px'};
     height: 4rem;
@@ -70,6 +73,29 @@ const LogoContainer = styled.div`
     @media (max-width: 600px) {
         border-color: transparent;
     }
+`
+const logoKeyframes = keyframes`
+    30% {
+        left: 0%;
+        transform: rotate(0deg)
+    }
+    60% {
+        left: 80%;
+        transform: rotate(490deg)
+    }
+`
+
+const Logo = styled.div`
+    height: 100%;
+    width: 64px;
+    margin-left: 0.5rem;
+    background-image: url(${props => props.src});
+    background-repeat: no-repeat;
+    background-position: center;
+
+    position: absolute;
+    left: 0%;
+    animation: ${logoKeyframes} 3s ease infinite;
 `
 
 const TextContainer = styled.div`
@@ -190,7 +216,9 @@ export default () => {
     return (
       <Container>
         <MeCard onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} hovered={hovered} >
-            <LogoContainer hovered={hovered} />
+            <LogoContainer hovered={hovered}>
+                <Logo src={mkoLogo} />
+            </LogoContainer>
             <TextContainer hovered={hovered}>
                 <Name>Mark Spurgeon</Name>
                 <Description>

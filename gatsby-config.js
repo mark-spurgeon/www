@@ -5,15 +5,14 @@ module.exports = {
     url: "https://markspurgeon.ch",
   },
   plugins: [
-    `gatsby-plugin-netlify-cms`,
     `gatsby-plugin-loadable-components-ssr`,
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-emotion`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        name: `images`,
-        path: `${__dirname}/src/images/`,
+        name: `media`,
+        path: `${__dirname}/src/media/`,
         plugins: [
           `gatsby-transformer-sharp`,
           `gatsby-plugin-sharp`,
@@ -22,7 +21,12 @@ module.exports = {
     },
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
-    `gatsby-remark-images`,
+    { 
+      resolve: `gatsby-remark-images`,
+      options: {
+        backgroundColor: 'transparent',
+      }
+    },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -59,7 +63,7 @@ module.exports = {
         name: 'Marko [Mark Spurgeon]',
         short_name: 'Marko [Mark Spurgeon]',
         start_url: '/',
-        icon: 'src/images/markon.png',
+        icon: 'src/media/markon.png',
       },
     },
     {

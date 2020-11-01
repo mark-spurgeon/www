@@ -133,7 +133,7 @@ const Styled = styled.div`
 `
 
 const Article = styled.article`
-  margin-top: 2.5rem;
+  margin-top: 0rem;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 `
