@@ -150,7 +150,7 @@ exports.sourceNodes = async ({
           const projectData = {
             ...article,
             // Generated data : if these fields exist in `article`, they will be overriden
-            url: (language == 'en') ? `/project/${projectName}` : `/project/${language}/${projectName}`,
+            url: (language == 'en') ? `/project/${projectName}` : `/${language}/project/${projectName}`,
             slug: projectName,
             body: toHex(JSON.stringify(article.body)), // encode to ensure it is not read as json by graphql,
             thumbnailImage: thumbnailNode, // TODO : rename to thumbnailImage
