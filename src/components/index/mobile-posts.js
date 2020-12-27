@@ -66,24 +66,19 @@ const Headline = styled.h2`
 export default ({ items }) => {
 
   let postList = items.map((item, index) => {
-    let { fluid } = item.node.frontmatter.featuredImage.thumbnail
+    // let { fluid } = item.node.thumbnail
 
     return (
       <PostLink
-        to={`/${item.node.slug}`}
-        key={item.node.frontmatter.title}
-        title={item.node.frontmatter.title}
+        to={item.url}
+        key={item.title}
+        title={item.title}
         index={index}
         >
-          { fluid && 
-            <Thumbnail fluid={fluid} index={index} />
-          }
           <Headline 
             index={index} 
-            color={item.node.frontmatter.color || 'black'}
-            outline={item.node.frontmatter.outline}
             >
-            {item.node.frontmatter.title}
+            {item.title}
           </Headline>
       </PostLink>
     )

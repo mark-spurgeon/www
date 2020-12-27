@@ -6,56 +6,22 @@ module.exports = {
   },
   plugins: [
     `gatsby-plugin-loadable-components-ssr`,
+    `gatsby-plugin-sharp`,
+    `gatsby-transformer-sharp`,
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-emotion`,
+    {
+      resolve: require.resolve(`./plugins/source-project`),
+    },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `media`,
         path: `${__dirname}/src/media/`,
-        plugins: [
-          `gatsby-transformer-sharp`,
-          `gatsby-plugin-sharp`,
-        ]
-      },
-    },
-    `gatsby-plugin-sharp`,
-    `gatsby-transformer-sharp`,
-    { 
-      resolve: `gatsby-remark-images`,
-      options: {
-        backgroundColor: 'transparent',
-      }
-    },
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        name: `posts`,
-        path: `${__dirname}/src/posts/`,
       },
     },
     {
-      resolve: "gatsby-plugin-page-creator",
-      options: {
-        path: `${__dirname}/src/posts`,
-      },
-    },
-    { 
-      resolve: `gatsby-plugin-mdx`,
-      options: {
-        extensions: [`.mdx`, `.md`],
-        defaultLayouts: {
-          default: require.resolve('./src/components/layout.js')
-        },
-        gatsbyRemarkPlugins: [
-          {
-            resolve: `gatsby-remark-images`,
-            options: {
-              maxWidth: 1200,
-            },
-          },
-        ],
-      },
+      resolve: require.resolve(`./plugins/transformer-project`),
     },
     {
       resolve: `gatsby-plugin-manifest`,

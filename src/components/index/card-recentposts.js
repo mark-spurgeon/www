@@ -7,7 +7,7 @@ const PostListContainer = styled.div`
   width: 14rem;
   padding: 0;
   font-family: 'IBM Plex Mono';
-
+  color: black;
   margin-top: 5px;
   overflow-y: auto;
 
@@ -58,7 +58,7 @@ export default ({ items }) => {
   
   return (
     <PostListContainer>
-      <Label>Other posts</Label>
+      <Label>MORE PROJECTS</Label>
       {Posts}
     </PostListContainer>
   )

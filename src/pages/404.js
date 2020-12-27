@@ -39,14 +39,14 @@ const PostLink = styled(Link)`
   color: #7896ff;
 `
 
-export default ({
+export default (/*{
   data: {
     posts: {
       edges
     }
   }
-}) => {
-  let posts = edges.map(item => <PostLink to={`/${item.node.slug}`}>{item.node.frontmatter && item.node.frontmatter.title}</PostLink>)
+}*/) => {
+  let posts = null// = edges.map(item => <PostLink to={`/${item.node.slug}`}>{item.node.frontmatter && item.node.frontmatter.title}</PostLink>)
   return (
     <Container>
       <Helmet>
@@ -65,6 +65,7 @@ export default ({
   )
 }
 
+/*
 export const pageQuery = graphql`
   query {
     posts : allMdx(sort: {fields: [frontmatter___date], order: DESC}) {
@@ -79,3 +80,4 @@ export const pageQuery = graphql`
     }
   }
 `
+*/

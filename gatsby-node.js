@@ -7,7 +7,6 @@
 // You can delete this file if you're not using it
 const path = require('path');
 exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
-
   actions.setWebpackConfig({
     resolve: {
       modules: [

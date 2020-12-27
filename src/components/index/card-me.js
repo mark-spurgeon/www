@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'gatsby';
 import styled from '@emotion/styled';
-import {  css, keyframes } from '@emotion/core';
+import {  css, keyframes } from '@emotion/react';
 
 import mkoLogo from '../../media/mko-small.svg'
 
@@ -113,23 +113,25 @@ const TextContainer = styled.div`
 `
 
 const Name = styled.div`
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 1.333rem;
+    font-family: "Public Sans", -apple-system, BlinkMacSystemFont, sans-serif;
     font-weight: 400;
+    font-size: 1.333rem;
     line-height: 1;
     padding-left: 0.5rem;
     padding-top: 0.5rem;
+    color:black;
 `
 
 const Description = styled.div`
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.75rem;
-    font-weight: 500;
+    font-family: "Public Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 400;
+    font-size: 0.9rem;
+    font-weight: 400;
     font-style: italic;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     margin-top: 0.25rem;
-    color: #483d32;
+    color: black;
 `
 
 const SocialBox = styled.div`
@@ -204,21 +206,19 @@ const SeriousLink = styled(Link)`
 
 `
 
-export default () => {
-    const [hovered, setHovered] = useState(true);
+export default ({onHover}) => {
+    const [hovered, setHovered] = useState(false);
+
     const onMouseEnter = () => {
-        setHovered(true)
+        onHover();
+        setHovered(true);
     }
     const onMouseLeave = () => {
-        setHovered(false)
+        setHovered(false);
     }
-
     return (
       <Container>
         <MeCard onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} hovered={hovered} >
-            <LogoContainer hovered={hovered}>
-                <Logo src={mkoLogo} />
-            </LogoContainer>
             <TextContainer hovered={hovered}>
                 <Name>Mark Spurgeon</Name>
                 <Description>

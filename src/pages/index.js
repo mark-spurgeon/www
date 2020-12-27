@@ -86,15 +86,9 @@ const Index = ({
   data
 }) => {
   const [image, setImage] = useState(data.homeImage.childImageSharp.fluid);
+  const otherPosts = [];
 
-  const featuredPosts = data.posts.edges.filter(i => i.node.frontmatter && i.node.frontmatter.status === 'featured')
-  const otherPosts = data.posts.edges.filter(i => {
-    const isNotFeatured = i.node.frontmatter && i.node.frontmatter.status !== 'featured'
-    const isNotHidden = i.node.frontmatter && i.node.frontmatter.status !== 'hidden'
-    const isNotWIPHidden = i.node.frontmatter && i.node.frontmatter.status !== 'wip'
-    
-    return (isNotFeatured && isNotHidden && isNotWIPHidden)
-  })
+  const featuredProjects = data.projects.edges.filter(p => p.node.status === 'featured')
 
   return (
     <Container>
@@ -103,13 +97,13 @@ const Index = ({
         <Links />
       </Header>
       <Screen>
-        <MobilePosts items={featuredPosts} />
+        <MobilePosts items={featuredProjects} />
         <ScreenImage fluid={image} />
       </Screen>
       <NavigationContainer>
         <Navigation>
-          <MeCard />
-              <DesktopPosts items={featuredPosts} setImage={setImage} />
+          <MeCard onHover={() => setImage(data.homeImage.childImageSharp.fluid)} />
+              <DesktopPosts items={featuredProjects} setImage={setImage} />
               <RecentPostsCard items={otherPosts} />
         </Navigation>
       </NavigationContainer>
@@ -125,39 +119,35 @@ export const pageQuery = graphql`
     homeImage : file(relativePath: {eq: "parcs.jpg"}) {
       id
       childImageSharp {
-        fluid(maxWidth: 1200, maxHeight: 500) {
+        fluid(maxWidth: 1400, maxHeight: 500) {
           ...GatsbyImageSharpFluid
         }
       }
     }
-    posts : allMdx(sort: {fields: [frontmatter___date], order: DESC}) {
+
+    projects: allProject(sort: {fields: [date], order: DESC}, filter: {language: {eq: "en"}}) {
       edges {
         node {
-          frontmatter {
-            title
-            description
-            date
-            status
-            featured # DEPRECIATED 
-            authors
-            color
-            outline
-            featuredImage {
-              # Big Image
-              image: childImageSharp {
-                fluid(maxWidth: 1000, maxHeight: 500) {
-                  ...GatsbyImageSharpFluid
-                }
-              }
-              # Mobile thumbnail
-              thumbnail: childImageSharp {
-                fluid(maxWidth: 300, maxHeight: 200) {
-                  ...GatsbyImageSharpFluid
-                }
-              }
+          url
+          title
+          status
+          thumbnail
+          description
+          language
+          thumbnailImage {
+            fluid {
+              base64
+              aspectRatio
+              src
+              srcSet
+              srcSetType
+              sizes
+              originalImg
+              density
+              presentationWidth
+              presentationHeight
             }
           }
-          slug
         }
       }
     }
