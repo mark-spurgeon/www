@@ -92,7 +92,9 @@ const Index = ({
 
   return (
     <Container>
-      <Head title="Marko [Mark Spurgeon]" />
+      <Head title="Mark Spurgeon">
+        <meta name="description" content="Welcome to my digital home. I'm a geographer/urbanist and I do cartography, web design, videos, 3D art and drawing." />
+      </Head>
       <Header>
         <Links />
       </Header>
