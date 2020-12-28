@@ -60,6 +60,21 @@ async function getImageNodes({
   return sharpNodes;
 }
 
+const getArticles = async ({ globPattern }) => {
+  var allArticles = [];
+
+  const allFiles = glob.sync(globPattern);
+  for (let index = 0; index < allFiles.length; index++) {
+    const filePath = allFiles[index];
+    const dataString = await readText(filePath);
+    const article = archieml.load(dataString);
+
+    allArticles.push({ ...article, filePath })
+  }
+
+  return allArticles;
+}
+
 exports.createSchemaCustomization = ({ actions }) => {
   const { createTypes } = actions;
   const typeDefs = `
@@ -143,58 +158,51 @@ exports.sourceNodes = async ({
 
     // Find article versions
     var existingVersions = []; // needed to check if it version already exists
-    const articleVersionsPath = path.join('src/projects', projectName, 'index*(*.aml|*.txt|*.docx)');
-    // Loop through all article versions
-    glob(articleVersionsPath, (err, files) => {
+    const globPattern = path.join(__dirname, '../../src/projects', projectName, 'index*(*.aml|*.txt|*.docx)');
+    const articles = await getArticles({ globPattern });
 
-      files.forEach(articlePath => {
-        readText(articlePath).then((articleString) => {
-          // Extract *article* object from archieml format
-          const article = archieml.load(articleString);
+    articles.forEach(article => {
+      // Verify *language* version and check if that 
+      // doesn't exist already
+      var language = path.basename(article.filePath).split('.')[1]
+      if (['docx', 'txt', 'aml'].includes(language)) { language = 'en'; }
+      if (existingVersions.includes(language)) {
+        return; 
+        // language already exists, dont follow up
+      } else {
+        existingVersions.push(language);
+      }
+      
+      // Filter thumbnail node from project image nodes
+      var thumbnailNode = imageNodes.filter(node => node.name === path.parse(article.thumbnail).name)[0]
+      if (!thumbnailNode) {
+        thumbnailNode = imageNodes[0];
+      }
 
-          // Verify *language* version and check if that 
-          // doesn't exist already
-          var language = path.basename(articlePath).split('.')[1]
-          if (['docx', 'txt', 'aml'].includes(language)) { language = 'en'; }
-          if (existingVersions.includes(language)) {
-            return; 
-            // language already exists, dont follow up
-          } else {
-            existingVersions.push(language);
-          }
-          
-          // Filter thumbnail node from project image nodes
-          var thumbnailNode = imageNodes.filter(node => node.name === path.parse(article.thumbnail).name)[0]
-          if (!thumbnailNode) {
-            thumbnailNode = imageNodes[0];
-          }
-
-          // Create full node
-          const projectData = {
-            ...article,
-            // Generated data : if these fields exist in `article`, they will be overriden
-            url: (language == 'en') ? `/project/${projectName}` : `/${language}/project/${projectName}`,
-            slug: projectName,
-            body: [...Buffer.from(JSON.stringify(article.body))], // encode to ensure it is not read as json by graphql,
-            thumbnailImage: thumbnailNode, // TODO : rename to thumbnailImage
-            thumb__NODE: thumbnailNode.id,
-            theme: theme,
-            language: language,
-          }
-          const projectNode = {
-            // node base
-            ...projectData,
-            id: createNodeId(`project-${projectName}-${language}`),
-            parent: `__SOURCE__`,
-            children: [],
-            internal: {
-              type: 'Project',
-              contentDigest: createContentDigest(projectData),
-            },
-          };
-          createNode(projectNode);
-        });
-      });
+      // Create full node
+      const projectData = {
+        ...article,
+        // Generated data : if these fields exist in `article`, they will be overriden
+        url: (language == 'en') ? `/project/${projectName}` : `/${language}/project/${projectName}`,
+        slug: projectName,
+        body: [...Buffer.from(JSON.stringify(article.body))], // encode to ensure it is not read as json by graphql,
+        thumbnailImage: thumbnailNode, // TODO : rename to thumbnailImage
+        thumb__NODE: thumbnailNode.id, // testing
+        theme: theme,
+        language: language,
+      }
+      const projectNode = {
+        // node base
+        ...projectData,
+        id: createNodeId(`project-${projectName}-${language}`),
+        parent: null,
+        children: [],
+        internal: {
+          type: 'Project',
+          contentDigest: createContentDigest(projectData),
+        },
+      };
+      createNode(projectNode);
     });
   });
 
