@@ -169,7 +169,9 @@ export default ({
       </Headline>
       
       <Body content={body} theme={theme} images={images} />
-
+      <div style={{color: 'black', paddingTop: '1rem', maxWidth: '34rem', margin: '0 auto', fontSize: '0.7rem'}}>
+        Copyright © 2020 Mark Spurgeon
+      </div>
   </Article>
 )}
 
