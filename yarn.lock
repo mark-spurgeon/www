@@ -7623,6 +7623,11 @@ hex-color-regex@^1.1.0:
   resolved "https://registry.yarnpkg.com/hex-color-regex/-/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
   integrity sha512-l9sfDFsuqtOqKDsQdqrMRk0U85RZc0RtOR9yPI7mRVOa4FsR/BVnZ0shmQRM96Ji99kYZP/7hn1cedc1+ApsTQ==
 
+hex-encode-decode@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/hex-encode-decode/-/hex-encode-decode-1.0.0.tgz#469109e285846250cd7859f6a5edb9bfc25c7659"
+  integrity sha512-/tV6SFsFwHbBtGcfTeoZCxPcGBc+Cbvd4pXpNcUk+i+Hak7mDrHFnH40t7YMG80bjrXWj70chuQt7/iWWu5beg==
+
 hicat@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/hicat/-/hicat-0.7.0.tgz#a704cb3f57e49fbd7d38c2edd7aba38ff0b35263"

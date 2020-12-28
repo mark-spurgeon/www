@@ -3,7 +3,19 @@ const fs = require('fs');
 const glob = require('glob');
 const mammoth = require("mammoth");
 const archieml = require('archieml');
-const { fluid, stats, traceSVG } = require(`gatsby-plugin-sharp`)
+const { fluid } = require('gatsby-plugin-sharp');
+
+
+function utf8ToHex(str) {
+  return Array.from(str).map(c => 
+    c.charCodeAt(0) < 128 ? c.charCodeAt(0).toString(16) : 
+    encodeURIComponent(c).replace(/\%/g,'').toLowerCase()
+  ).join('');
+}
+
+function hexToUtf8(hex) {
+  return decodeURIComponent('%' + hex.match(/.{1,2}/g).join('%'));
+}
 
 
 async function readText(filePath) {
@@ -106,7 +118,7 @@ exports.createSchemaCustomization = ({ actions }) => {
       title: String
       description: String
       status: String
-      body: [Int]
+      body: [String]
       theme: String
       language: String
       thumbnail: String
@@ -114,6 +126,8 @@ exports.createSchemaCustomization = ({ actions }) => {
     }
  
     `
+
+    // createTypes(typeDefs)
 }
 
 /**
@@ -185,7 +199,7 @@ exports.sourceNodes = async ({
         // Generated data : if these fields exist in `article`, they will be overriden
         url: (language == 'en') ? `/project/${projectName}` : `/${language}/project/${projectName}`,
         slug: projectName,
-        body: [...Buffer.from(JSON.stringify(article.body))], // encode to ensure it is not read as json by graphql,
+        body: utf8ToHex(JSON.stringify(article.body)), // encode to ensure it is not read as json by graphql,
         thumbnailImage: thumbnailNode, // TODO : rename to thumbnailImage
         thumb__NODE: thumbnailNode.id, // testing
         theme: theme,
