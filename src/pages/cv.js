@@ -9,7 +9,6 @@ import Head from '../components/head'
 import Footer from '../components/footer'
 
 import mkoLogo from '../media/mko-small.svg'
-import pdfSource from '../media/CV.pdf'
 
 const Container = styled.div`
   background: #ffdab9;
@@ -65,13 +64,14 @@ export default () => (
     <Head />
 
     <Content>
-      <Viewer file={pdfSource}></Viewer>
       <LogoContainer to="/" src={mkoLogo}></LogoContainer>
       <h2><i>CV & Skills</i></h2>
       <p>This page is a work in progress</p>
-      <a href="/media/cv.pdf" >Download the CV</a>
       
     </Content>
     <Footer />
   </Container>
 )
+
+
+// <Viewer file={pdfSource}></Viewer>
