@@ -18,8 +18,6 @@ const Container = styled.div`
 const hoveredStyles = css`
   max-height: 14rem;
   height: 100%;
-  border-width: 1px;
-  border-bottom-width: 0;
   border-color: black;
   box-shadow: 0 0 4px 4px rgb(50, 50, 50, 0.04);
 `
@@ -37,7 +35,7 @@ const MeCard = styled.div`
     background-color: #ffdab9;
 
     border-style: solid;
-    border-width: 0;
+    border-width: 1px;
     border-bottom-width: 0;
     border-color: transparent;
 

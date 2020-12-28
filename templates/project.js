@@ -91,11 +91,11 @@ const Body = ({ content, theme, images }) => content.map(item => {
       background-color: transparent;
     `
     let imageName = item.value.split('.')[0];
-    let imageNode = images.edges.filter(obj => obj.node.name === imageName)[0];
-    let imageFluid = imageNode.node.fluid;
-    console.log(imageFluid)
-
-    return <ImageWide fluid={imageFluid} />;
+    let imageNodes = images.edges.filter(obj => obj.node.name === imageName);
+    if (imageNodes.length > 0) {
+      let imageFluid = imageNodes[0].node.fluid;
+      return <ImageWide fluid={imageFluid} />;
+    }
   } 
   
   // Iframe
@@ -152,6 +152,7 @@ export default ({
   <Article theme={theme}>
       <Helmet>
         <title>{project.title} - Mark Spurgeon</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
         <meta name="description" content={project.description || ''} />
         <meta name="keywords" content={project.keywords || ''} />
         <meta name="author" content="Mark Spurgeon" />
@@ -179,7 +180,6 @@ export const query = graphql`
       language
       title
       date
-      slug
       url
       title
 

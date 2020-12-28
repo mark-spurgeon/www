@@ -6,7 +6,7 @@ thumbnail: guido.png
 color: #1d3557
 backgroundColor: #283747
 fontColor: white
-description: A very short film mixing photography and 3D animation
+description: A very short film combining photography and 3D animation
 
 [+body]
 

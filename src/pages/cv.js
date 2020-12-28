@@ -1,8 +1,8 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 import React from 'react';
 import styled from '@emotion/styled'
-import { Document, Page} from 'react-pdf/dist/esm/entry.webpack';
+// import { Document, Page} from 'react-pdf/dist/esm/entry.webpack';
 import { Link } from 'gatsby';
 
 import Head from '../components/head'
@@ -34,10 +34,10 @@ const Container = styled.div`
 
 `
 
-const Viewer = styled(Document)`
+/*const Viewer = styled(Document)`
   width: auto;
   padding: 1rem;
-`
+`*/
 
 const Content = styled.div`
   flex: 1;
@@ -61,9 +61,6 @@ const LogoContainer = styled(Link)`
 export default () => (
   <Container>
     <Head />
-    <Viewer file="/media/cv.pdf">
-      <Page pageNumber={1} />
-    </Viewer>
 
     <Content>
       <LogoContainer to="/" src={mkoLogo}></LogoContainer>

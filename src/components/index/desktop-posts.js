@@ -150,7 +150,6 @@ export default ({ items, data, setImage }) => {
 
   let filteredItems = items.slice(0, 4);
   let featuredPosts = filteredItems.map(item => {
-    console.log('featured item', item)
     return <PostCard 
       {...item.node}
       href={item.node.url}

@@ -45,7 +45,7 @@
   },
   "scripts": {
     "dev": "gatsby develop",
-    "build": "gatsby build --log-pages",
+    "build": "gatsby build --log-pages --verbose",
     "clean": "gatsby clean",
     "serve": "gatsby serve"
   }

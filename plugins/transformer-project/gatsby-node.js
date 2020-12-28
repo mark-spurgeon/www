@@ -19,6 +19,14 @@ function fromHex(h) {
   return decodeURIComponent(escape(s))
 }
 
+function bin2String(array) {
+  var result = "";
+  for (var i = 0; i < array.length; i++) {
+    result += String.fromCharCode(parseInt(array[i], 2));
+  }
+  return result;
+}
+
 exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
   const articleTemplate = path.resolve(`templates/project.js`) // TODO : add fallback default template
@@ -41,8 +49,14 @@ exports.createPages = async ({ graphql, actions }) => {
 
   result.data.allProject.edges.forEach(async edge => {
     let themeFile = edge.node.theme ? fs.readFileSync(edge.node.theme, 'utf8') : null;
-    let theme = themeFile ? JSON.parse(themeFile) : null;
+    let theme = themeFile ? JSON.parse(themeFile) : themeFile;
 
+    let bodyBuffer = edge.node.body;
+    let bString = bodyBuffer.map(c => String.fromCharCode(c)).join('')
+    let body = JSON.parse(bString);
+    
+    console.log('creating page')
+    console.log(edge.node.url)
     createPage({
       path: edge.node.url,
       component: articleTemplate,
@@ -52,8 +66,8 @@ exports.createPages = async ({ graphql, actions }) => {
         language: edge.node.language,
         // Data that is passed through
         theme,
-        body: JSON.parse(fromHex(edge.node.body)),
+        body,
       },
-    });
+    })
   })
 }
