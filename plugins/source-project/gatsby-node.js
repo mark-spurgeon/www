@@ -6,18 +6,6 @@ const archieml = require('archieml');
 const { fluid } = require('gatsby-plugin-sharp');
 
 
-function utf8ToHex(str) {
-  return Array.from(str).map(c => 
-    c.charCodeAt(0) < 128 ? c.charCodeAt(0).toString(16) : 
-    encodeURIComponent(c).replace(/\%/g,'').toLowerCase()
-  ).join('');
-}
-
-function hexToUtf8(hex) {
-  return decodeURIComponent('%' + hex.match(/.{1,2}/g).join('%'));
-}
-
-
 async function readText(filePath) {
   const ext = path.extname(filePath)
   if (ext === '.docx') {
@@ -29,6 +17,7 @@ async function readText(filePath) {
     return fs.readFileSync(filePath, 'utf8')
   }
 }
+
 
 async function fileNodeToSharpNode(imageNode) {
   let imageFluid = await fluid({
@@ -90,6 +79,11 @@ const getArticles = async ({ globPattern }) => {
 exports.createSchemaCustomization = ({ actions }) => {
   const { createTypes } = actions;
   const typeDefs = `
+    
+    type ArticleBody {
+      type: String
+    }
+    
     type ProjectImageFluid {
       base64: String
       aspectRatio: Float
@@ -101,6 +95,7 @@ exports.createSchemaCustomization = ({ actions }) => {
       density: Int
       presentationWidth: Int
       presentationHeight: Int
+    }
 
     type ProjectImage implements Node {
       project: String
@@ -113,21 +108,23 @@ exports.createSchemaCustomization = ({ actions }) => {
 
     type Project implements Node {
       date: Date
-      url: String
       slug: String
+      language: String
+      url: String
       title: String
       description: String
       status: String
-      body: [String]
+      keywords: String
+      collection: String
+      body: String
       theme: String
-      language: String
       thumbnail: String
       thumbnailImage: ProjectImage
     }
  
     `
 
-    // createTypes(typeDefs)
+    createTypes(typeDefs)
 }
 
 /**
@@ -199,11 +196,11 @@ exports.sourceNodes = async ({
         // Generated data : if these fields exist in `article`, they will be overriden
         url: (language == 'en') ? `/project/${projectName}` : `/${language}/project/${projectName}`,
         slug: projectName,
-        body: utf8ToHex(JSON.stringify(article.body)), // encode to ensure it is not read as json by graphql,
+        body: JSON.stringify(article.body), // encode to ensure it is not read as json by graphql,
         thumbnailImage: thumbnailNode, // TODO : rename to thumbnailImage
-        thumb__NODE: thumbnailNode.id, // testing
         theme: theme,
         language: language,
+        bodyObj: JSON.stringify(article.body),
       }
       const projectNode = {
         // node base

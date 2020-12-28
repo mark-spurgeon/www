@@ -7,5 +7,5 @@ export default styled.div`
   flex-direction: column;
   max-width: 37rem;
   margin: 0 auto;
-  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
 `

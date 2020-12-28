@@ -31,9 +31,6 @@ exports.createPages = async ({ graphql, actions }) => {
     let themeFile = edge.node.theme ? fs.readFileSync(edge.node.theme, 'utf8') : null;
     let theme = themeFile ? JSON.parse(themeFile) : themeFile;
 
-    let bodyString = hexToUtf8(edge.node.body);
-    let body = JSON.parse(bString);
-
     createPage({
       path: edge.node.url,
       component: articleTemplate,
@@ -43,7 +40,6 @@ exports.createPages = async ({ graphql, actions }) => {
         language: edge.node.language,
         // Data that is passed through
         theme,
-        body,
       },
     })
   });

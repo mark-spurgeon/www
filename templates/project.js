@@ -157,8 +157,11 @@ export default ({
   pageContext,
   data,
 }) => {
-  let { body, theme } = pageContext;
+  let { theme } = pageContext;
   let { project, images } = data;
+  console.log(project)
+  const body = JSON.parse(project.body);
+
   return (
   <Article theme={theme}>
       <Helmet>
@@ -192,12 +195,12 @@ export const query = graphql`
     project : project(slug: {eq: $slug}, language:{eq: $language}) {
       slug
       language
-      title
       date
-      url
       title
+      body
 
       description
+      keywords
     }
 
     images : allProjectImage(filter: {project: {eq: "topolitique"}}) {

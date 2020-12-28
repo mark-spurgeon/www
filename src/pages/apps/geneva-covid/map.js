@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import styled from '@emotion/styled';
 import fixUtf8 from 'fix-utf8';
 
-import { Legend, Square, Round, VBox, HBox } from '../../components/legend'
+import { Legend, Square, Round, VBox, HBox } from '.../../components/legend'
 
 import 'ol/ol.css';
 import './map.css';
@@ -267,11 +267,9 @@ const setupMapEvents = (map, messageContainer) => {
 const GenevCovidMapContainer = styled.div`
   label: geneva-covid-map-container;
   height: 600px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: rgb(140, 140, 140);
-
-  margin-top: 0.5rem;
+  margin: 0;
+  overflow: hidden;
+  background: white;
 
   @media (max-width: 600px) {
     height: 400px;
@@ -333,7 +331,7 @@ const TheMap = () => {
   }, [])
 
   return (
-    <div className="map-container">
+    <div className="map-container" style={{backgroundColor:  'white', color: 'black', margin: 0, overflow:'hidden'}}>
       <GenevCovidMapContainer 
         style={{width: '100%', height: 500}} 
         ref={mapContainer} 
