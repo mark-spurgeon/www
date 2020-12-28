@@ -18,8 +18,9 @@ const Container = styled.div`
 const hoveredStyles = css`
   max-height: 14rem;
   height: 100%;
+  border-width: 1px;
   border-bottom-width: 0;
-  border-color: #f0cbab;
+  border-color: black;
   box-shadow: 0 0 4px 4px rgb(50, 50, 50, 0.04);
 `
 
@@ -36,11 +37,9 @@ const MeCard = styled.div`
     background-color: #ffdab9;
 
     border-style: solid;
-    border-width: 0px;
+    border-width: 0;
     border-bottom-width: 0;
     border-color: transparent;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
 
 
     transition: all .3s;
@@ -101,11 +100,7 @@ const Logo = styled.div`
 const TextContainer = styled.div`
     padding: 0;
     margin: 0;
-    border-style: solid;
-    border-width: 0;
-    border-left-width: 1px;
-    border-right-width: 1px;
-    border-color: ${props => props.hovered ? '#e7be95' : 'transparent'};
+
     @media (max-width: 600px) {
       max-height: 4rem;
     }
@@ -123,9 +118,9 @@ const Name = styled.div`
 `
 
 const Description = styled.div`
-    font-family: "Public Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'IBM Plex Mono', monospace;
     font-weight: 400;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     font-weight: 400;
     font-style: italic;
     padding-left: 0.5rem;
@@ -135,26 +130,56 @@ const Description = styled.div`
 `
 
 const SocialBox = styled.div`
-    margin: 0.5rem;
+    margin-top: 0.5rem;
+    height: 2rem;
+    display: flex;
+
+    border-style: solid;
+    border-width: 0;
+    border-top-width: 1px;
+    border-color: rgba(0,0,0,0.1);
 `
 
 const Social = styled(Link)`
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 500;
     text-decoration: none;
-    background-color: ${props => props.nobg ? 'transparent' : '#FECD9A'};
-    padding: 0.15rem 0.6rem 0.15rem 0.6rem;
-    border-radius: 0.75rem;
-    margin-right: ${props => props.nobg ? '0' : '0.4rem'};
+    line-height: 1.8rem;
+    flex: 1;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
 
 
-    color: ${props => props.color || 'black'}
+    color: ${props => props.color || 'black'};
+
+    border-style: solid;
+    border-width: 0;
+    border-left-width: 1px;
+    border-color: rgba(0,0,0,0.1);
+`
+
+const SocialIcon = styled(Link)`
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 500;
+    line-height: 1.8rem;
+    width: 2rem;
+    text-decoration: none;
+    text-align: center;
+
+    color: ${props => props.color || 'black'};
+
+    border-style: solid;
+    border-width: 0;
+    border-left-width: 1px;
+    border-color: rgba(0,0,0,0.1);
 `
 
 const SeriousBox = styled.div`
     display: flex;
     flex-direction: row;
-    height: 2.6rem;
+    height: 3rem;
     padding-right: 0.5rem;
     /*background: #f6cfb3;*/
     border-style: solid;
@@ -187,19 +212,14 @@ const LinkAnimation = keyframes`
 `
 
 const SeriousLink = styled(Link)`
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: "Public Sans", -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 0.75rem;
-    line-height: 1.4rem;
-    text-decoration: none;
-    border-radius: 0.15rem;
-    margin-left: 0.5rem;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+    line-height: 2rem;
+    text-decoration: underline;
     flex: 1;
 
     padding: 0.15rem 0.6rem 0.15rem 0.6rem;
-    animation: ${props => props.nobg ? null : LinkAnimation} 4s ease infinite;
-    color: ${props => props.nobg ? 'black': 'white'};
+    color: black;
     &:hover {
         text-decoration: underline;
     }
@@ -230,12 +250,12 @@ export default ({onHover}) => {
                     <Social to="mailto:markspurgeon96@hotmail.com" title="Marko's E-mail">
                         markspurgeon96@hotmail.com
                     </Social>
-                    <Social to="https://github.com/the-duck" target="_blank" color="rgb(40, 50, 250)" title="Marko's Github" nobg>
-                        🤖
-                    </Social>
-                    <Social to="https://instagram.com/marko.studio" target="_blank" color="rgb(200, 50, 80)" title="Marko's Instagram" nobg>
-                        🎨
-                    </Social>
+                    <SocialIcon to="https://github.com/the-duck" target="_blank" color="rgb(40, 50, 250)" title="Marko's Github" nobg>
+                        GH
+                    </SocialIcon>
+                    <SocialIcon to="https://instagram.com/marko.studio" target="_blank" color="rgb(200, 50, 80)" title="Marko's Instagram" nobg>
+                        IN
+                    </SocialIcon>
                 </SocialBox>
 
                 <SeriousBox hovered={hovered}>

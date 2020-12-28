@@ -53,7 +53,7 @@ const CardBox = styled(Link)`
     border-style: solid;
     border-width: 0;
     border-left-width: 1px;
-    border-color: rgba(0,0,0,0.3);
+    border-color: rgba(0,0,0,0.1);
     
     color: inherit;
     text-decoration: none;

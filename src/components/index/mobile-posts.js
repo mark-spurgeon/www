@@ -51,34 +51,37 @@ const Headline = styled.h2`
   padding: 0;
   margin: 0.25rem;
   font-family: 'IBM Plex Mono', monospace;
-  font-weight: 400;
+  font-style: italic;
+  font-weight: 500;
   font-size: 0.9rem;
   line-height: 0.9rem;
   bottom: 0;
   position: absolute;
   bottom: 0;
-  color: ${props => props.color || 'white'};
+  color: ${props => props.color || 'black'};
   margin: 0.25rem;
   padding: 0.1rem 0.25rem 0.1rem 0.25rem;
   background-color: ${props => props.outline || '#ffdab9' };
+  border-style: solid;
+  border-width: 1px;
 `
 
 export default ({ items }) => {
 
   let postList = items.map((item, index) => {
     // let { fluid } = item.node.thumbnail
-
     return (
       <PostLink
-        to={item.url}
-        key={item.title}
-        title={item.title}
+        to={item.node.url}
+        key={item.node.title}
+        title={item.node.title}
         index={index}
         >
+          <Thumbnail fluid={item.node.thumbnailImage.fluid} />
           <Headline 
             index={index} 
             >
-            {item.title}
+            {item.node.title}
           </Headline>
       </PostLink>
     )
