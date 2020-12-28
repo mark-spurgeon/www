@@ -38,6 +38,8 @@ const MeCard = styled.div`
     border-width: 1px;
     border-bottom-width: 0;
     border-color: transparent;
+    border-top-color: black;
+    border-right-color: black;
 
 
     transition: all .3s;
@@ -53,52 +55,12 @@ const MeCard = styled.div`
     }
 `
 
-const LogoContainer = styled.div`
-    position: relative;
-    overflow: hidden;
-    transition: all .3s;
-    max-height: ${props => props.hovered ? '4rem': '4px'};
-    height: 4rem;
-    @media (max-width: 600px) {
-      max-height: 4rem;
-    }
-    /*background: #05668d;*/
-    border-style: solid;
-    border-width: 1px;
-    border-bottom-width: 0;
-    border-color: ${props => props.hovered ? '#cca57d': 'transparent'};
-    @media (max-width: 600px) {
-        border-color: transparent;
-    }
-`
-const logoKeyframes = keyframes`
-    30% {
-        left: 0%;
-        transform: rotate(0deg)
-    }
-    60% {
-        left: 80%;
-        transform: rotate(490deg)
-    }
-`
-
-const Logo = styled.div`
-    height: 100%;
-    width: 64px;
-    margin-left: 0.5rem;
-    background-image: url(${props => props.src});
-    background-repeat: no-repeat;
-    background-position: center;
-
-    position: absolute;
-    left: 0%;
-    animation: ${logoKeyframes} 3s ease infinite;
-`
 
 const TextContainer = styled.div`
     padding: 0;
     margin: 0;
-
+    height: 5.5rem;
+    overflow: hidden;
     @media (max-width: 600px) {
       max-height: 4rem;
     }
@@ -107,7 +69,7 @@ const TextContainer = styled.div`
 
 const Name = styled.div`
     font-family: "Public Sans", -apple-system, BlinkMacSystemFont, sans-serif;
-    font-weight: 400;
+    font-weight: 700;
     font-size: 1.333rem;
     line-height: 1;
     padding-left: 0.5rem;
@@ -118,8 +80,9 @@ const Name = styled.div`
 const Description = styled.div`
     font-family: 'IBM Plex Mono', monospace;
     font-weight: 400;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 400;
+    line-height: 1.2rem;;
     font-style: italic;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
@@ -138,10 +101,10 @@ const SocialBox = styled.div`
     border-color: rgba(0,0,0,0.1);
 `
 
-const Social = styled(Link)`
-    font-family: 'IBM Plex Mono', monospace;
+const Social = styled.a`
+    font-family: "Public Sans", -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 0.8rem;
-    font-weight: 500;
+    font-weight: 600;
     text-decoration: none;
     line-height: 1.8rem;
     flex: 1;
@@ -153,14 +116,13 @@ const Social = styled(Link)`
 
     border-style: solid;
     border-width: 0;
-    border-left-width: 1px;
     border-color: rgba(0,0,0,0.1);
 `
 
-const SocialIcon = styled(Link)`
-    font-family: 'IBM Plex Mono', monospace;
+const SocialIcon = styled.a`
+    font-family: "Public Sans", -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 0.8rem;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 1.8rem;
     width: 2rem;
     text-decoration: none;
@@ -212,6 +174,7 @@ const LinkAnimation = keyframes`
 const SeriousLink = styled(Link)`
     font-family: "Public Sans", -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 0.75rem;
+    font-weight: 600;
     line-height: 2rem;
     text-decoration: underline;
     flex: 1;
@@ -243,15 +206,15 @@ export default ({onHover}) => {
                     Hi! I'm a geographer/urbanist studying at the University of Geneva.
                     I make cartography, websites and sometimes artwork :)
                 </Description>
-
-                <SocialBox>
-                    <Social to="mailto:markspurgeon96@hotmail.com" title="Marko's E-mail">
+            </TextContainer>
+            <SocialBox>
+                    <Social href="mailto:markspurgeon96@hotmail.com" title="Marko's E-mail">
                         markspurgeon96@hotmail.com
                     </Social>
-                    <SocialIcon to="https://github.com/the-duck" target="_blank" color="rgb(40, 50, 250)" title="Marko's Github" nobg>
+                    <SocialIcon href="https://github.com/the-duck" target="_blank" color="rgb(40, 50, 250)" title="Marko's Github" nobg>
                         GH
                     </SocialIcon>
-                    <SocialIcon to="https://instagram.com/marko.studio" target="_blank" color="rgb(200, 50, 80)" title="Marko's Instagram" nobg>
+                    <SocialIcon href="https://instagram.com/marko.studio" target="_blank" color="rgb(200, 50, 80)" title="Marko's Instagram" nobg>
                         IN
                     </SocialIcon>
                 </SocialBox>
@@ -264,7 +227,6 @@ export default ({onHover}) => {
                         Links & references
                     </SeriousLink>
                 </SeriousBox>
-            </TextContainer>
         </MeCard>
       </Container>
     )

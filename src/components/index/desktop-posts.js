@@ -88,7 +88,7 @@ const TextContainer = styled.div`
 
 const Title = styled.div`
     font-family: "Public Sans", -apple-system, BlinkMacSystemFont, sans-serif;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 1rem;
     line-height: 1rem;
     padding: 0.5rem;
