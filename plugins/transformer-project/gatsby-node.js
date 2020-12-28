@@ -1,32 +1,6 @@
 const path = require('path');
 const fs = require('fs');
 
-function toHex(s) {
-  // utf8 to latin1
-  var s = unescape(encodeURIComponent(s))
-  var h = ''
-  for (var i = 0; i < s.length; i++) {
-      h += s.charCodeAt(i).toString(16)
-  }
-  return h
-}
-
-function fromHex(h) {
-  var s = ''
-  for (var i = 0; i < h.length; i+=2) {
-      s += String.fromCharCode(parseInt(h.substr(i, 2), 16))
-  }
-  return decodeURIComponent(escape(s))
-}
-
-function bin2String(array) {
-  var result = "";
-  for (var i = 0; i < array.length; i++) {
-    result += String.fromCharCode(parseInt(array[i], 2));
-  }
-  return result;
-}
-
 exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
   const articleTemplate = path.resolve(`templates/project.js`) // TODO : add fallback default template
@@ -69,5 +43,7 @@ exports.createPages = async ({ graphql, actions }) => {
         body,
       },
     })
-  })
+  });
+
+  return;
 }

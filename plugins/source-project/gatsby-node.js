@@ -5,24 +5,6 @@ const mammoth = require("mammoth");
 const archieml = require('archieml');
 const { fluid, stats, traceSVG } = require(`gatsby-plugin-sharp`)
 
-function toHex(s) {
-  // utf8 to latin1
-  var s = unescape(encodeURIComponent(s))
-  var h = ''
-  for (var i = 0; i < s.length; i++) {
-      h += s.charCodeAt(i).toString(16)
-  }
-  return h
-}
-
-function fromHex(h) {
-  var s = ''
-  for (var i = 0; i < h.length; i+=2) {
-      s += String.fromCharCode(parseInt(h.substr(i, 2), 16))
-  }
-  return decodeURIComponent(escape(s))
-}
-
 
 async function readText(filePath) {
   const ext = path.extname(filePath)
@@ -76,6 +58,47 @@ async function getImageNodes({
     sharpNodes.push(sharpNode);
   }
   return sharpNodes;
+}
+
+exports.createSchemaCustomization = ({ actions }) => {
+  const { createTypes } = actions;
+  const typeDefs = `
+    type ProjectImageFluid {
+      base64: String
+      aspectRatio: Float
+      src: String
+      srcSet: String
+      srcSetType: String
+      sizes: String
+      originalImg: String
+      density: Int
+      presentationWidth: Int
+      presentationHeight: Int
+
+    type ProjectImage implements Node {
+      project: String
+      name: String
+      ext: String
+      extension: String
+      absolutePath: String
+      fluid: ProjectImageFluid
+    }
+
+    type Project implements Node {
+      date: Date
+      url: String
+      slug: String
+      title: String
+      description: String
+      status: String
+      body: [Int]
+      theme: String
+      language: String
+      thumbnail: String
+      thumbnailImage: ProjectImage
+    }
+ 
+    `
 }
 
 /**
@@ -154,6 +177,7 @@ exports.sourceNodes = async ({
             slug: projectName,
             body: [...Buffer.from(JSON.stringify(article.body))], // encode to ensure it is not read as json by graphql,
             thumbnailImage: thumbnailNode, // TODO : rename to thumbnailImage
+            thumb__NODE: thumbnailNode.id,
             theme: theme,
             language: language,
           }
@@ -170,8 +194,9 @@ exports.sourceNodes = async ({
           };
           createNode(projectNode);
         });
-      })
-    })
-  
-  })
+      });
+    });
+  });
+
+  return;
 }
