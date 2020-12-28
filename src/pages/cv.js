@@ -2,23 +2,25 @@
 import { jsx, css } from '@emotion/react';
 import React from 'react';
 import styled from '@emotion/styled'
-// import { Document, Page} from 'react-pdf/dist/esm/entry.webpack';
+import { Document, Page} from 'react-pdf/dist/esm/entry.webpack';
 import { Link } from 'gatsby';
 
 import Head from '../components/head'
 import Footer from '../components/footer'
 
 import mkoLogo from '../media/mko-small.svg'
+import pdfSource from '../media/CV.pdf'
 
 const Container = styled.div`
   background: #ffdab9;
   font-family: 'IBM Plex Mono';
 
+  min-height: 100vh;
+
   display: flex;
   flex-direction: row;
   align-items: stretch;
   justify-content: stretch;
-
 
   h1, h2, h3, h4 {
     font-weight: 500;
@@ -34,10 +36,10 @@ const Container = styled.div`
 
 `
 
-/*const Viewer = styled(Document)`
+const Viewer = styled(Document)`
   width: auto;
   padding: 1rem;
-`*/
+`
 
 const Content = styled.div`
   flex: 1;
@@ -63,6 +65,7 @@ export default () => (
     <Head />
 
     <Content>
+      <Viewer file={pdfSource}></Viewer>
       <LogoContainer to="/" src={mkoLogo}></LogoContainer>
       <h2><i>CV & Skills</i></h2>
       <p>This page is a work in progress</p>

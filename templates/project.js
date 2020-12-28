@@ -5,6 +5,8 @@ import ReactMarkdown from 'react-markdown'
 import Helmet from 'react-helmet'
 import Img from 'gatsby-image'
 
+import FooterMeta from '../src/components/footer'
+
 const Body = ({ content, theme, images }) => content.map(item => {
   // Paragraph
   if (item.type === 'text') {
@@ -139,7 +141,16 @@ const Headline = styled.h1`
   font-weight: 600;
   font-size: 2rem;
   line-height: 2rem;
-  color: ${props => props.theme.colors.font || 'red'};
+  color: ${props => props.theme.colors.font || 'black'};
+`
+
+const Footer = styled.div`  
+  max-width: 34rem;
+  margin: 0 auto;
+  padding-top: 1rem;
+  font-size: 0.8rem;
+  font-family: "Public Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  color: ${props => props.theme.colors.font || 'black'};
 `
 
 export default ({
@@ -169,9 +180,10 @@ export default ({
       </Headline>
       
       <Body content={body} theme={theme} images={images} />
-      <div style={{color: 'black', paddingTop: '1rem', maxWidth: '34rem', margin: '0 auto', fontSize: '0.7rem'}}>
-        Copyright © 2020 Mark Spurgeon
-      </div>
+      <Footer theme={theme} >
+        Copyright © {new Date().getFullYear()} Mark Spurgeon
+      </Footer>
+      <FooterMeta />
   </Article>
 )}
 
