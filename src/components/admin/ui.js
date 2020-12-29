@@ -39,6 +39,7 @@ export const TextInput = styled.input`
     border-style: none;
     background: transparent;
     outline: none;
+    color: white;
 `
 
 export const VBox = styled.div`
@@ -102,6 +103,7 @@ export const TabButton = styled.button`
   border-style: solid;
   border-width: 1px;
   border-color: ${props => props.selected ? '#5679de' : '#e7be95'};
+  color: white;
 
   padding: 0.5rem;
   font-family: 'IBM Plex Mono', monospace;

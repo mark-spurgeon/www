@@ -222,7 +222,7 @@ export default () => {
     <main style={{ padding: '0.5rem' }}>
       <Helmet>
         <Head />
-        <title>Admin / Marko's Links</title>
+        <title>Admin / Links / Mark Spurgeon</title>
         <meta name="robots" content="noindex"></meta>
       </Helmet>
       <Heading>

@@ -12,12 +12,12 @@ export default () => (
   <main style={{ padding: '0.5rem' }}>
     <Helmet>
       <Head />
-      <title>Admin / Marko [Mark Spurgeon]</title>
+      <title>Admin Mark Spurgeon</title>
       <meta name="robots" content="noindex"></meta>
     </Helmet>
 
     <Heading>
-      <span style={{color: '#5679de'}}>Admin /</span> ...
+      <span style={{color: 'white'}}>Admin /</span> ...
     </Heading>
 
     <Heading>
