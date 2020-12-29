@@ -5,7 +5,9 @@ const mammoth = require("mammoth");
 const archieml = require('archieml');
 const { fluid } = require('gatsby-plugin-sharp');
 
+const { typeDefs } = require('./type-defs');
 const remote = require('./remote');
+const local = require('./local');
 
 
 async function readText(filePath) {
@@ -80,53 +82,7 @@ const getArticles = async ({ globPattern }) => {
 
 exports.createSchemaCustomization = ({ actions }) => {
   const { createTypes } = actions;
-  const typeDefs = `
-    
-    type ArticleBody {
-      type: String
-    }
-    
-    type ProjectImageFluid {
-      base64: String
-      aspectRatio: Float
-      src: String
-      srcSet: String
-      srcSetType: String
-      sizes: String
-      originalImg: String
-      density: Int
-      presentationWidth: Int
-      presentationHeight: Int
-    }
-
-    type ProjectImage implements Node {
-      project: String
-      name: String
-      ext: String
-      extension: String
-      absolutePath: String
-      fluid: ProjectImageFluid
-    }
-
-    type Project implements Node {
-      date: Date
-      slug: String
-      language: String
-      url: String
-      title: String
-      description: String
-      status: String
-      keywords: String
-      collection: String
-      body: String
-      theme: String
-      thumbnail: String
-      thumbnailImage: ProjectImage
-    }
- 
-    `
-
-    createTypes(typeDefs)
+  createTypes(typeDefs);
 }
 
 /**
@@ -144,83 +100,7 @@ exports.createSchemaCustomization = ({ actions }) => {
  *    a language. Each version produces a new html page.
  */
 exports.sourceNodes = async (args) => {
-
-  remote.sourceNodes(args)
-
-  let {
-    actions,
-    createNodeId,
-    createContentDigest,
-  } = args;
-  
-  const { createNode } = actions
-  // List all project folders
-  const projects = fs.readdirSync('src/projects')
-  projects.forEach(async projectName => {
-    // Read `theme` object
-    const themePath = path.join('src/projects', projectName, 'theme.json')
-    var theme = fs.existsSync(themePath) ? themePath : 'plugins/source-project/theme.json';
-    // Get all images in folder
-    const imagesGlob = path.join(__dirname, '../../src/projects', projectName, '*.{jpg,png,gif}');
-    let imagePaths = glob.sync(imagesGlob);
-    let imageNodes = await getImageNodes({
-      imagePaths,
-      projectName,
-      createNodeId,
-      createContentDigest,
-    });
-    imageNodes.forEach(imageNode => {
-      createNode(imageNode)
-    })
-
-    // Find article versions
-    var existingVersions = []; // needed to check if it version already exists
-    const globPattern = path.join(__dirname, '../../src/projects', projectName, 'index*(*.aml|*.txt|*.docx)');
-    const articles = await getArticles({ globPattern });
-
-    articles.forEach(article => {
-      // Verify *language* version and check if that 
-      // doesn't exist already
-      var language = path.basename(article.filePath).split('.')[1]
-      if (['docx', 'txt', 'aml'].includes(language)) { language = 'en'; }
-      if (existingVersions.includes(language)) {
-        return; 
-        // language already exists, dont follow up
-      } else {
-        existingVersions.push(language);
-      }
-      
-      // Filter thumbnail node from project image nodes
-      var thumbnailNode = imageNodes.filter(node => node.name === path.parse(article.thumbnail).name)[0]
-      if (!thumbnailNode) {
-        thumbnailNode = imageNodes[0];
-      }
-
-      // Create full node
-      const projectData = {
-        ...article,
-        // Generated data : if these fields exist in `article`, they will be overriden
-        url: (language == 'en') ? `/project/${projectName}` : `/${language}/project/${projectName}`,
-        slug: projectName,
-        body: JSON.stringify(article.body), // encode to ensure it is not read as json by graphql,
-        thumbnailImage: thumbnailNode, // TODO : rename to thumbnailImage
-        theme: theme,
-        language: language,
-      }
-      const projectNode = {
-        // node base
-        ...projectData,
-        id: createNodeId(`project-${projectName}-${language}`),
-        parent: null,
-        children: [],
-        internal: {
-          type: 'Project',
-          contentDigest: createContentDigest(projectData),
-        },
-      };
-      createNode(projectNode);
-    });
-  });
-
+  let remoteSourceNodes = await remote.sourceNodes(args);
+  let localSourceNodes = await local.sourceNodes(args);
   return;
 }
