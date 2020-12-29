@@ -14,9 +14,6 @@ module.exports = {
       resolve: require.resolve(`./plugins/source-project`),
     },
     {
-      resolve: require.resolve(`./plugins/source-remote-project`),
-    },
-    {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `media`,
