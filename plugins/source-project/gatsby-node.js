@@ -5,6 +5,8 @@ const mammoth = require("mammoth");
 const archieml = require('archieml');
 const { fluid } = require('gatsby-plugin-sharp');
 
+const remote = require('./remote');
+
 
 async function readText(filePath) {
   const ext = path.extname(filePath)
@@ -141,12 +143,16 @@ exports.createSchemaCustomization = ({ actions }) => {
  *    An article can have multiple versions corresponding to 
  *    a language. Each version produces a new html page.
  */
-exports.sourceNodes = async ({
-  actions,
-  createNodeId,
-  createContentDigest,
-}) => {
-  console.log('Sourcing node from projects')
+exports.sourceNodes = async (args) => {
+
+  remote.sourceNodes(args)
+
+  let {
+    actions,
+    createNodeId,
+    createContentDigest,
+  } = args;
+  
   const { createNode } = actions
   // List all project folders
   const projects = fs.readdirSync('src/projects')
@@ -200,7 +206,6 @@ exports.sourceNodes = async ({
         thumbnailImage: thumbnailNode, // TODO : rename to thumbnailImage
         theme: theme,
         language: language,
-        bodyObj: JSON.stringify(article.body),
       }
       const projectNode = {
         // node base

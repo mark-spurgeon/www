@@ -5315,6 +5315,13 @@ download@^7.1.0:
     p-event "^2.1.0"
     pify "^3.0.0"
 
+dropbox@^8.2.0:
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/dropbox/-/dropbox-8.2.0.tgz#b3d2244424685d978761e3a9aea34625eb9422a3"
+  integrity sha512-lA/Bb7ZWPaeDK+S4AIeAAlPc49nwbrTlgMSLO5Nghg6FfhqhAKdICtpENviwb0YT1Zgn1NmYk1LCJfiyrJ7lVQ==
+  dependencies:
+    node-fetch "^2.6.1"
+
 duck@~0.1.11:
   version "0.1.11"
   resolved "https://registry.yarnpkg.com/duck/-/duck-0.1.11.tgz#3adc1a3d2fbdd5879ffd3bda05ce0f69355e9093"
