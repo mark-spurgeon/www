@@ -60,7 +60,7 @@ export default ({ data }) => {
 
 export const pageQuery = graphql`
   query {
-    page: allSitePage {
+    page: allSitePage(sort: {fields: path, order: ASC}) {
       edges {
         node {
           path
