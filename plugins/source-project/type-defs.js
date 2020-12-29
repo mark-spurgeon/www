@@ -1,6 +1,15 @@
 
 exports.typeDefs = `
 
+type ProjectThemeColors {
+  background: String
+  font: String
+}
+
+type ProjectTheme {
+  colors: ProjectThemeColors
+}
+
 type ProjectImageFluid {
   base64: String
   aspectRatio: Float
@@ -24,7 +33,7 @@ type ProjectImage implements Node {
 }
 
 type Project implements Node {
-  date: Date
+  date: Date @dateformat(formatString: "YYYY-MM-DD")
   slug: String
   language: String
   url: String

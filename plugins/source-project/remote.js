@@ -3,37 +3,31 @@ var { Dropbox } = require('dropbox');
 const mammoth = require("mammoth");
 const archieml = require('archieml');
 const { fluid } = require('gatsby-plugin-sharp');
-const { createNodeId, createContentDigest } = require(`gatsby-core-utils`);
+const { createContentDigest } = require(`gatsby-core-utils`);
 const nodePath = require('path');
 const fs = require('fs');
 
-const getLanguage = ({ name }) => {
-  const defaultLanguage = 'en';
-  const explodedName = name.split('.');
-  const length = explodedName.length;
+const {
+  getLanguage,
+  getExtension,
+  isTextExtension,
+  isImageExtension,
+} = require('./helpers/files');
 
-  return (length === 3) ? explodedName[1] : defaultLanguage;
-}
+const {
+  prepareProjectImageNode,
+  prepareProjectNode,
+  createProjectURL,
+} = require('./helpers/nodes');
 
-const getExtension = ({ name }) => {
-  const explodedName = name.split('.')
-
-  return explodedName[explodedName.length - 1]
-}
-
-const isTextExtension = ({ ext }) => {
-  return ['docx', 'aml', 'txt'].includes(ext)
-}
-
-const isImageExtension = ({ ext }) => {
-  return ['png', 'jpg', 'gif'].includes(ext)
-}
+const {
+  readText
+} = require('./helpers/text');
 
 const createImageNodes = async ({
   dbx,
   project,
   cache,
-  createNodeId,
   gatsbyFunctions,
 }) => {
   var images = [];
@@ -46,32 +40,34 @@ const createImageNodes = async ({
       const ext = getExtension({ name: entry.name})
       if (isImageExtension({ ext })) {
         let downloadResponse = await dbx.filesDownload({ path: entry.path_lower});
+        
+        // Store image locally
         let image = downloadResponse.result.fileBinary;
-        const imageData = {
-          id: gatsbyFunctions.createNodeId(`project-image-${project.name}-${entry.name}`),
-          project: project.name,
-          name: nodePath.parse(entry.name).name,
-          ext: `.${ext}`,
-          extension: ext,
-        }
-
-        const imageNode = {
-          ...imageData,
-          internal: {
-            type: 'ProjectImage',
-            contentDigest: createContentDigest(imageData),
-          }
-        }
-        // Write to temporary file
-        let fileName = nodePath.join(cache.directory, `/tmp-${createContentDigest(imageData)}.${ext}`)
+        let fileName = nodePath.join(cache.directory, `/tmp-${createContentDigest(image)}.${ext}`)
         fs.writeFileSync(fileName, image);
 
-        // Create sharp fluid node
-        let sharpNode = {
-          ...imageNode,
-          fluid: await fluid({file: { ...imageNode, absolutePath: fileName }}),
+        // Create image data
+        const imageData = {
+          name: nodePath.parse(entry.name).name,
+          project: project.name,
+          ext: `.${ext}`,
+          extension: ext,
+          absolutePath: fileName,
         }
+        // Create first image node
+        const imageNode = prepareProjectImageNode({
+          data: imageData,
+          ...gatsbyFunctions,
+        });
 
+        // Create sharp fluid node
+        let fluidObject = await fluid({ file: imageNode });
+        let sharpNode = prepareProjectImageNode({
+          data: { ...imageNode, fluid: fluidObject },
+          ...gatsbyFunctions,
+        });
+
+        // Return image
         images.push(sharpNode);
         // Create node
         gatsbyFunctions.createNode(sharpNode);
@@ -84,6 +80,79 @@ const createImageNodes = async ({
   }
 
   return images
+}
+
+// Create all project nodes for 
+const createProjectNodes = async ({
+  dbx,
+  project,
+  imageNodes,
+  gatsbyFunctions,
+}) => {
+  var projects = [];
+  try {
+    // Dropbox : find all `index*` files
+    let fileResponse = await dbx.filesSearch({ path: project.path, query: 'index'});
+    let matches = fileResponse.result.matches;
+    for (let index = 0; index < matches.length; index++) {
+      const { metadata } = matches[index];
+      // Retrieve from name : Language, Extension
+      var language = getLanguage({ name:  metadata.name });
+      var ext = getExtension({ name:  metadata.name });
+      // Dropbox: download file content
+      if (metadata.is_downloadable && isTextExtension({ ext })) {
+        let downloadResponse = await dbx.filesDownload({ path: metadata.path_lower});
+        let text = await readText({
+          buffer: downloadResponse.result.fileBinary,
+          ext,
+        });
+        // Retrieve article data from text
+        // It uses the archieml format
+        let articleData = archieml.load(text);
+        // name: take from folder
+        let name = project.name;
+        // url : compose it
+        let url = createProjectURL({ language: language, project: project.name})
+        // body : convert to string
+        let body = JSON.stringify(articleData.body);
+        // theme : find theme data
+        // TODO : return actual data from json
+        let theme = 'plugins/source-project/theme.json';
+        // thumbnailImage : find from 
+        let filteredImages = imageNodes.filter(img => img.name === nodePath.basename(articleData.thumbnail).name)
+        let thumbnailImage = (filteredImages.length > 0) ? filteredImages[0] : imageNodes[0];
+        
+        // Combine node data
+        let projectData = {
+          ...articleData,
+          slug: name, // SHOULD DEPRECIATE
+          name,
+          language,
+          url,
+          body,
+          thumbnailImage,
+          theme,
+        };
+
+        // Prepare node
+        let projectNode = prepareProjectNode({
+          data: projectData,
+          ...gatsbyFunctions,
+        })
+
+        // Create node
+        gatsbyFunctions.createNode(projectNode)
+        // Add to list
+        projects.push(projectNode)
+      }
+    }
+  } 
+  
+  catch (e) {
+    console.log(e);
+  }
+
+  return projects;
 }
 
 const getArticles = async ({ dbx, path }) => {
@@ -168,40 +237,21 @@ exports.sourceNodes = async ({
       }
     });
 
-    // Get all article version for project
-    const articles = await getArticles({dbx, path: project.path })
-    articles.forEach(article => {
-      // NO ASYNC OPERATION HERE
-      // get thumbnail image
-      var thumbnailNode = imageNodes.filter(node => node.name === nodePath.parse(article.thumbnail).name)[0]
-      if (!thumbnailNode) {
-        thumbnailNode = imageNodes[0];
+    const projectNodes = await createProjectNodes({
+      dbx,
+      project,
+      imageNodes,
+      gatsbyFunctions: {
+        createNodeId,
+        createNode,
+        createContentDigest,
       }
+    })
 
-      let projectVersionData = {
-        ...article,
-        slug: project.name,
-        url: (article.language === 'en') ? `/project/${project.name}` : `${article.language}/project/${project.name}`,
-        body: JSON.stringify(article.body),
-        theme: 'plugins/source-project/theme.json', // placeholder
-        thumbnailImage: thumbnailNode,
-        id: createNodeId(`project-${project.name}-${article.language}`),
-        parent: null,
-        children: [],
-      }
-
-      let projectVersionNode = {
-        ...projectVersionData,
-        internal: {
-          type: 'Project',
-          contentDigest: createContentDigest(projectVersionData),
-        },
-      };
-      // DONT CREATE NODE BEFORE IMAGES
-      createNode(projectVersionNode);
+    // Just print
+    projectNodes.forEach(project => {
+      console.log(`Created project '${project.name}' at '${project.url}' `)
     })
   }
-
-
   return;
 }
