@@ -90,20 +90,19 @@ const getArticles = async ({ globPattern }) => {
  *    An article can have multiple versions corresponding to 
  *    a language. Each version produces a new html page.
  */
-exports.sourceNodes = async (args) => {
-  let {
-    actions,
-    createNodeId,
-    createContentDigest,
-  } = args;
-  
+exports.sourceNodes = async ({
+  actions,
+  createNodeId,
+  createContentDigest,
+}) => {
   const { createNode } = actions
   // List all project folders
   const projects = fs.readdirSync('src/projects')
   projects.forEach(async projectName => {
     // Read `theme` object
     const themePath = path.join('src/projects', projectName, 'theme.json')
-    var theme = fs.existsSync(themePath) ? themePath : 'plugins/source-project/theme.json';
+    const realThemePath = fs.existsSync(themePath) ? themePath : 'plugins/source-project/theme.json';
+    const theme = JSON.parse(fs.readFileSync(realThemePath).toString());
     // Get all images in folder
     const imagesGlob = path.join(__dirname, '../../src/projects', projectName, '*.{jpg,png,gif}');
     let imagePaths = glob.sync(imagesGlob);

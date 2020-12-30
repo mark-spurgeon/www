@@ -17,10 +17,7 @@ exports.createPages = async ({ graphql, actions }) => {
           node {
             url
             slug
-            title
             language
-            theme
-            body
           }
         }
       }
@@ -28,9 +25,6 @@ exports.createPages = async ({ graphql, actions }) => {
   `)
 
   result.data.allProject.edges.forEach(async edge => {
-    let themeFile = edge.node.theme ? fs.readFileSync(edge.node.theme, 'utf8') : null;
-    let theme = themeFile ? JSON.parse(themeFile) : themeFile;
-
     createPage({
       path: edge.node.url,
       component: articleTemplate,
@@ -38,8 +32,6 @@ exports.createPages = async ({ graphql, actions }) => {
         // Needed to query article
         slug: edge.node.slug,
         language: edge.node.language,
-        // Data that is passed through
-        theme,
       },
     })
   });

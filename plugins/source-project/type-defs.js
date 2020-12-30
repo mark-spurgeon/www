@@ -43,7 +43,7 @@ type Project implements Node {
   keywords: String
   collection: String
   body: String
-  theme: String
+  theme: ProjectTheme
   thumbnail: String
   thumbnailImage: ProjectImage
 }

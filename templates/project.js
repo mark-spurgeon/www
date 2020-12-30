@@ -157,9 +157,9 @@ export default ({
   pageContext,
   data,
 }) => {
-  let { theme } = pageContext;
   let { project, images } = data;
-  console.log(project)
+  let { theme } = project;
+
   const body = JSON.parse(project.body);
 
   return (
@@ -198,6 +198,12 @@ export const query = graphql`
       date
       title
       body
+      theme {
+        colors {
+          background
+          font
+        }
+      }
 
       description
       keywords

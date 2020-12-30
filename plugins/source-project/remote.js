@@ -117,7 +117,7 @@ const createProjectNodes = async ({
         let body = JSON.stringify(articleData.body);
         // theme : find theme data
         // TODO : return actual data from json
-        let theme = 'plugins/source-project/theme.json';
+        let theme = JSON.parse(fs.readFileSync('plugins/source-project/theme.json').toString());
         // thumbnailImage : find from 
         let filteredImages = imageNodes.filter(img => img.name === nodePath.basename(articleData.thumbnail).name)
         let thumbnailImage = (filteredImages.length > 0) ? filteredImages[0] : imageNodes[0];
