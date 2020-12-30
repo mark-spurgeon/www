@@ -199,10 +199,7 @@ export const query = graphql`
       title
       body
       theme {
-        colors {
-          background
-          font
-        }
+        ...AllProjectTheme
       }
 
       description
