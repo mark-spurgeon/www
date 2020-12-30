@@ -145,6 +145,7 @@ exports.sourceNodes = async ({
         // Generated data : if these fields exist in `article`, they will be overriden
         url: (language == 'en') ? `/project/${projectName}` : `/${language}/project/${projectName}`,
         slug: projectName,
+        name: projectName,
         body: JSON.stringify(article.body), // encode to ensure it is not read as json by graphql,
         thumbnailImage: thumbnailNode, // TODO : rename to thumbnailImage
         theme: theme,

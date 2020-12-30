@@ -191,9 +191,9 @@ export default ({
 )}
 
 export const query = graphql`
-  query($slug: String!, $language: String! ) {
-    project : project(slug: {eq: $slug}, language:{eq: $language}) {
-      slug
+  query($name: String!, $language: String! ) {
+    project : project(name: {eq: $name}, language:{eq: $language}) {
+      name
       language
       date
       title
@@ -209,7 +209,7 @@ export const query = graphql`
       keywords
     }
 
-    images : allProjectImage(filter: {project: {eq: "topolitique"}}) {
+    images : allProjectImage(filter: {project: {eq: $name}}) {
       edges {
         node {
           project

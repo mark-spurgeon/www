@@ -16,7 +16,7 @@ exports.createPages = async ({ graphql, actions }) => {
         edges {
           node {
             url
-            slug
+            name
             language
           }
         }
@@ -30,7 +30,7 @@ exports.createPages = async ({ graphql, actions }) => {
       component: articleTemplate,
       context: {
         // Needed to query article
-        slug: edge.node.slug,
+        name: edge.node.name,
         language: edge.node.language,
       },
     })

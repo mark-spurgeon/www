@@ -35,6 +35,7 @@ type ProjectImage implements Node {
 type Project implements Node {
   date: Date @dateformat(formatString: "YYYY-MM-DD")
   slug: String
+  name: String
   language: String
   url: String
   title: String
