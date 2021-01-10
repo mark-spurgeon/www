@@ -27,16 +27,19 @@ const PostCardContainer = styled.div`
 const ColorDiv = styled.div`
   label: color-div;
   display: block;
-
-  height: 4px;
-  background-color: ${props => props.color};  
+  position: absolute;
+  width: 100%;
+  top: 0;
+  z-index: -1;
+  
+  height: 0px;
+  background-color: ${props => 'transparent'};  
   border-style: solid;
   border-width: 0;
-  border-color: ${props => props.hovered ? 'white' : props.color};  
 
-  transition: all .3s;
+  transition: all .4s ease;
   ${props => props.hovered ? `
-    height: 7px;
+    height: 10rem;
   ` : null}
 `
 
@@ -76,8 +79,6 @@ const TextContainer = styled.div`
   display: block;
   height: 100%;
   border-width: 0;
-  border-left-width: 1px;
-  border-right-width: 1px;
   border-style: solid;
   border-color: transparent;
   transition: all .4s;
@@ -94,7 +95,7 @@ const Title = styled.div`
     padding: 0.5rem;
     padding-bottom: 0;
     transition: all .2s;
-    color: ${props => props.hovered ? 'black' : props.color ||'black'};
+    color: ${props => props.hovered ? 'black' : 'black'};
 `
 
 const Description = styled.div`
@@ -109,7 +110,7 @@ const Description = styled.div`
   padding-bottom: 0;
   padding-top: 0.25rem;
   transition: all .4s;
-  color: ${props => props.hovered ? '#e7be95' : 'black'};
+  color: ${props => props.hovered ? props.theme.colors.font : 'black'};
 `
 
 const PostCard = ({
@@ -117,10 +118,12 @@ const PostCard = ({
     description = 'nooo',
     thumbnail,
     thumbnailImage,
+    theme,
     onHover,
     href,
 }) => {
   const [hovered, setHovered] = useState(false);
+  console.log('theme', theme)
   return (
         <PostCardContainer>
             <CardBox
@@ -133,9 +136,9 @@ const PostCard = ({
                 onMouseLeave={() => setHovered(false)}
                 hovered={hovered}
                 >
-                <ColorDiv hovered={hovered} />
+                <ColorDiv hovered={hovered} theme={theme} />
                 <TextContainer hovered={hovered}>
-                  <Title hovered={hovered}>{title}</Title>
+                  <Title hovered={hovered} >{title}</Title>
                   { title.length <= 18 && description &&  
                     <Description hovered={hovered}>{description}</Description>
                   }

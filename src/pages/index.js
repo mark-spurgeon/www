@@ -136,6 +136,12 @@ export const pageQuery = graphql`
           thumbnail
           description
           language
+          theme {
+            colors {
+              background
+              font
+            }
+          }
           thumbnailImage {
             fluid {
               base64
