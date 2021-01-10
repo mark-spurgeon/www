@@ -1,6 +1,4 @@
-html, body {
-    background-color: black;
-    color: white;
+html, body, #__gatsby {
     padding: 0;
     margin: 0;
     font-size: 12pt;

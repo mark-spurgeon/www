@@ -9,7 +9,7 @@ function hexToUtf8(hex) {
 
 exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
-  const articleTemplate = path.resolve(`templates/project.js`) // TODO : add fallback default template
+  const articleTemplate = path.resolve(`src/components/templates/project.js`) // TODO : add fallback default template
   const result = await graphql(`
     query {
       allProject {

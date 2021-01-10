@@ -39,7 +39,7 @@ const MeCard = styled.div`
     border-bottom-width: 0;
     border-color: transparent;
     border-top-color: black;
-    border-right-color: black;
+    border-right-color: transparent;
 
 
     transition: all .3s;

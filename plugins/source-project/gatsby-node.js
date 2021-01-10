@@ -9,8 +9,8 @@ exports.createSchemaCustomization = ({ actions }) => {
 }
 
 exports.sourceNodes = async (args) => {
-  await remote.sourceNodes(args);
-  await local.sourceNodes(args);
-  
-  return;
+  let rem = await remote.sourceNodes(args);
+  let loc = await local.sourceNodes(args);
+
+  return [...rem, ...loc];
 }

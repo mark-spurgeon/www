@@ -5,6 +5,8 @@ const mammoth = require("mammoth");
 const archieml = require('archieml');
 const { fluid } = require('gatsby-plugin-sharp');
 
+const sharp = require('sharp');
+
 
 async function readText(filePath) {
   const ext = path.extname(filePath)
@@ -20,13 +22,26 @@ async function readText(filePath) {
 
 
 async function fileNodeToSharpNode(imageNode) {
-  let imageFluid = await fluid({
-    file: imageNode,
-  })
+  let imageFluid;
+  let imageSharp;
+  try {
+    imageFluid = await fluid({
+      file: imageNode,
+    })
+
+    return {
+      ...imageNode,
+      fluid: imageFluid,
+    }
+  } catch (e) {
+    let b64 = await sharp(imageNode.absolutePath).resize({ width: 64}).png().toBuffer();
+    imageSharp = `data:image/png;base64,${b64.toString('base64')}`;
+  }
 
   return {
     ...imageNode,
     fluid: imageFluid,
+    thumbnail: imageSharp,
   }
 }
 
@@ -91,14 +106,20 @@ const getArticles = async ({ globPattern }) => {
  *    a language. Each version produces a new html page.
  */
 exports.sourceNodes = async ({
+  preview, // 
   actions,
   createNodeId,
   createContentDigest,
 }) => {
+  let nodes = [];
   const { createNode } = actions
   // List all project folders
-  const projects = fs.readdirSync('src/projects')
-  projects.forEach(async projectName => {
+  let directory = path.join(__dirname, '../../src/projects')
+  let projects = fs.readdirSync(directory).filter(name => name !== '.DS_Store');
+  if (preview) { projects = projects.filter(name => name === preview) }
+  
+  for (let i = 0; i < projects.length; i++) {
+    const projectName = projects[i];
     // Read `theme` object
     const themePath = path.join('src/projects', projectName, 'theme.json')
     const realThemePath = fs.existsSync(themePath) ? themePath : 'plugins/source-project/theme.json';
@@ -113,7 +134,8 @@ exports.sourceNodes = async ({
       createContentDigest,
     });
     imageNodes.forEach(imageNode => {
-      createNode(imageNode)
+      createNode(imageNode);
+      nodes.push(imageNode);
     })
 
     // Find article versions
@@ -146,10 +168,11 @@ exports.sourceNodes = async ({
         url: (language == 'en') ? `/project/${projectName}` : `/${language}/project/${projectName}`,
         slug: projectName,
         name: projectName,
-        body: JSON.stringify(article.body), // encode to ensure it is not read as json by graphql,
+        // body: JSON.stringify(article.body), // encode to ensure it is not read as json by graphql,
         thumbnailImage: thumbnailNode, // TODO : rename to thumbnailImage
         theme: theme,
         language: language,
+        article: JSON.stringify(article),
       }
       const projectNode = {
         // node base
@@ -163,8 +186,16 @@ exports.sourceNodes = async ({
         },
       };
       createNode(projectNode);
+      nodes.push(projectNode);
     });
-  });
+  }
+  return nodes;
+}
 
-  return;
+exports.getProjects = () => {
+  return fs.readdirSync('src/projects').map(name => ({
+    name: name,
+    path: path.resolve(__dirname, `../../src/projects/${name}`),
+    type: 'local'
+  }))
 }

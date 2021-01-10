@@ -5,9 +5,11 @@ import ReactMarkdown from 'react-markdown'
 import Helmet from 'react-helmet'
 import Img from 'gatsby-image'
 
-import FooterMeta from '../src/components/footer'
+import FooterMeta from '../footer'
+import Head from '../head'
 
-const Body = ({ content, theme, images }) => content.map(item => {
+
+const Body = ({ content, theme, images }) => content.map((item, key) => {
   // Paragraph
   if (item.type === 'text') {
     let Paragraph = styled.p`
@@ -28,7 +30,7 @@ const Body = ({ content, theme, images }) => content.map(item => {
       }
     `
     return (
-      <Paragraph key={item.value} theme={theme}>
+      <Paragraph key={key} theme={theme}>
         <ReactMarkdown disallowedTypes={['paragraph']} unwrapDisallowed>
           {item.value}
         </ReactMarkdown>
@@ -49,7 +51,7 @@ const Body = ({ content, theme, images }) => content.map(item => {
       font-weight: 600;
       color: ${props => props.theme.colors.font || 'black'};
     `
-    return <Heading key={item.value} theme={theme}>{item.value}</Heading>
+    return <Heading key={key} theme={theme}>{item.value}</Heading>
   } 
 
   // H2
@@ -65,12 +67,20 @@ const Body = ({ content, theme, images }) => content.map(item => {
       font-weight: 600;
       color: ${props => props.theme.colors.font || 'black'};
     `
-    return <SubHeading key={item.value} theme={theme}>{item.value}</SubHeading>
+    return <SubHeading key={key} theme={theme}>{item.value}</SubHeading>
   } 
 
   // Image
   else if (item.type === 'image') {
     let Image = styled(Img)`
+      display: block;
+      width: 34rem;
+      max-width: 100%;
+      margin: 0rem auto;
+      background-color: transparent;
+    `
+    let ImageSrc = styled.img`
+      display: block;
       width: 34rem;
       max-width: 100%;
       margin: 0rem auto;
@@ -79,15 +89,27 @@ const Body = ({ content, theme, images }) => content.map(item => {
     let imageName = item.value.split('.')[0];
     if (images && images.edges) {
       let imageNode = images.edges.filter(obj => obj.node.name === imageName)[0];
-      let imageFluid = imageNode.node.fluid;
-      return <Image fluid={imageFluid} />;
+      let imageFluid = imageNode && imageNode.node.fluid;
+      if (imageFluid) {
+        return <Image key={key} fluid={imageFluid} />;
+      } else if (imageNode.node.thumbnail) {
+        return <ImageSrc src={imageNode.node.thumbnail}></ImageSrc>
+      }
     }
   } 
 
   // Image Wide
   else if (item.type === 'imageWide') {
     let ImageWide = styled(Img)`
+      display: block;
       width: ${props => props.fluid.presentationWidth}px;
+      max-width: 100%;
+      margin: 0rem auto;
+      background-color: transparent;
+    `
+    let ImageWideSrc = styled.img`
+      display: block;
+      width: 800px;
       max-width: 100%;
       margin: 0rem auto;
       background-color: transparent;
@@ -96,7 +118,11 @@ const Body = ({ content, theme, images }) => content.map(item => {
     let imageNodes = images.edges.filter(obj => obj.node.name === imageName);
     if (imageNodes.length > 0) {
       let imageFluid = imageNodes[0].node.fluid;
-      return <ImageWide fluid={imageFluid} />;
+      if (imageFluid) {
+        return <ImageWide fluid={imageFluid} key={key} />;
+      } else if (imageNodes[0].node.thumbnail) {
+        return <ImageWideSrc src={imageNodes[0].node.thumbnail}></ImageWideSrc>
+      }
     }
   } 
   
@@ -107,7 +133,7 @@ const Body = ({ content, theme, images }) => content.map(item => {
       display: block;
       max-width: 100%;
     `
-    return <IFrame key={JSON.stringify(item.value)} frameBorder="0" {...item.value} />
+    return <IFrame key={key} frameBorder="0" {...item.value} />
   } 
 
   // ignore if other
@@ -159,18 +185,18 @@ export default ({
 }) => {
   let { project, images } = data;
   let { theme } = project;
-
-  const body = JSON.parse(project.body);
+  console.log(project)
+  const { body } = JSON.parse(project.article);
 
   return (
   <Article theme={theme}>
-      <Helmet>
+      <Head>
         <title>{project.title} - Mark Spurgeon</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
         <meta name="description" content={project.description || ''} />
         <meta name="keywords" content={project.keywords || ''} />
         <meta name="author" content="Mark Spurgeon" />
-      </Helmet>
+      </Head>
       
       { project.kicker && 
         <Kicker theme={theme}>
@@ -197,7 +223,7 @@ export const query = graphql`
       language
       date
       title
-      body
+      article
       theme {
         colors {
           font

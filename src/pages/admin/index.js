@@ -1,29 +1,59 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Helmet from 'react-helmet'
 import { Link } from 'gatsby'
+
+import {
+  MenuItem,
+  Navbar,
+  Breadcrumbs,
+  Breadcrumb,
+  Spinner,
+  ControlGroup,
+  Toast, Toaster,
+  Button,
+  Callout,
+  Alignment,
+  Position,
+} from '@blueprintjs/core'
+import '@blueprintjs/core/lib/css/blueprint.css'
 
 import Head from '.../../components/head'
 import Footer from '.../../components/footer'
 
 import { Heading } from '.../../components/admin/ui'
 
+const breadcrumbs = [
+  { href: '/admin', icon: "application", current: true},
+  { href: '/admin/links', text: 'links' },
+  { href: '/admin/preview', text: 'preview' }
+]
 
-export default () => (
-  <main style={{ padding: '0.5rem' }}>
-    <Helmet>
-      <Head />
-      <title>Admin Mark Spurgeon</title>
-      <meta name="robots" content="noindex"></meta>
-    </Helmet>
+const breadcrumbRenderer = ({ text, ...props }) => {
+  return <Breadcrumb {...props}>{text}</Breadcrumb>
+}
 
-    <Heading>
-      <span style={{color: 'white'}}>Admin /</span> ...
-    </Heading>
+export default () => {
 
-    <Heading>
-      <Link to="/admin/links" style={{color: '#b2b9f0'}}>../links</Link>
-    </Heading>
+  return (
+    <main>
+      <Helmet>
+        <Head />
+        <title>Admin | Mark Spurgeon</title>
+        <meta name="robots" content="noindex"></meta>
+      </Helmet>
 
-    <Footer />
-  </main>
-)
+      <Navbar>
+        <Navbar.Group>
+          <Breadcrumbs 
+            currentBreadcrumbRenderer={breadcrumbRenderer}
+            items={breadcrumbs}
+            collapseFrom='end'
+            minVisibleItems={1}
+            style={{maxWidth: '100pt'}}
+          />
+        </Navbar.Group>
+      </Navbar>
+      <Footer />
+    </main>
+  )
+}

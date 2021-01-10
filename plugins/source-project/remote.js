@@ -6,6 +6,7 @@ const { fluid } = require('gatsby-plugin-sharp');
 const { createContentDigest } = require(`gatsby-core-utils`);
 const nodePath = require('path');
 const fs = require('fs');
+const sharp = require('sharp');
 
 const {
   getLanguage,
@@ -42,9 +43,12 @@ const createImageNodes = async ({
         let downloadResponse = await dbx.filesDownload({ path: entry.path_lower});
         
         // Store image locally
+        let fileName;
         let image = downloadResponse.result.fileBinary;
-        let fileName = nodePath.join(cache.directory, `/tmp-${createContentDigest(image)}.${ext}`)
-        fs.writeFileSync(fileName, image);
+        try {
+          fileName = nodePath.join(cache.directory, `/tmp-${createContentDigest(image)}.${ext}`)
+          fs.writeFileSync(fileName, image);
+        } catch (e) {}
 
         // Create image data
         const imageData = {
@@ -53,6 +57,7 @@ const createImageNodes = async ({
           ext: `.${ext}`,
           extension: ext,
           absolutePath: fileName,
+          blob: 'data:image/' + ext + ';base64,' + image.toString("base64"),
         }
         // Create first image node
         const imageNode = prepareProjectImageNode({
@@ -61,9 +66,17 @@ const createImageNodes = async ({
         });
 
         // Create sharp fluid node
-        let fluidObject = await fluid({ file: imageNode });
+        let fluidObject;
+        let imageSharp;
+        try {
+          fluidObject = await fluid({ file: imageNode });
+        } catch (e) {
+          let b64 = await sharp(imageNode.absolutePath).resize({ width: 64}).png().toBuffer();
+          imageSharp = `data:image/png;base64,${b64.toString('base64')}`;
+        }
+
         let sharpNode = prepareProjectImageNode({
-          data: { ...imageNode, fluid: fluidObject },
+          data: { ...imageNode, fluid: fluidObject, thumbnail: imageSharp },
           ...gatsbyFunctions,
         });
 
@@ -115,6 +128,7 @@ const createProjectNodes = async ({
         let url = createProjectURL({ language: language, project: project.name})
         // body : convert to string
         let body = JSON.stringify(articleData.body);
+        let data = JSON.stringify(articleData);
         // theme : find theme data
         // TODO : return actual data from json
         let theme = JSON.parse(fs.readFileSync('plugins/source-project/theme.json').toString());
@@ -129,7 +143,8 @@ const createProjectNodes = async ({
           name,
           language,
           url,
-          body,
+          // body,
+          article: data,
           thumbnailImage,
           theme,
         };
@@ -155,41 +170,6 @@ const createProjectNodes = async ({
   return projects;
 }
 
-const getArticles = async ({ dbx, path }) => {
-  var articles = [];
-  try {
-    // Dropbox : find all `index*` files
-    let fileResponse = await dbx.filesSearch({ path, query: 'index'});
-    let matches = fileResponse.result.matches;
-    for (let index = 0; index < matches.length; index++) {
-      const { metadata } = matches[index];
-      // Retrieve from name : Language, Extension
-      var language = getLanguage({ name:  metadata.name });
-      var ext = getExtension({ name:  metadata.name });
-      var articleOptions = {}
-      // Dropbox: download file content
-      if (metadata.is_downloadable && isTextExtension({ ext })) {
-        let downloadResponse = await dbx.filesDownload({ path: metadata.path_lower});
-        let data = await mammoth.extractRawText({
-          buffer: downloadResponse.result.fileBinary
-        });
-        let text = [ ...data.value].join('');
-
-        articleOptions = archieml.load(text);
-      }
-      // return article
-      let article = {
-        ...articleOptions,
-        language: language,
-      }
-      articles.push(article);
-    }
-  } catch (e) {
-    console.log(e);
-  }
-
-  return articles
-}
 
 const getProjectList = async ({ dbx }) => {
   var projects = [];
@@ -199,6 +179,7 @@ const getProjectList = async ({ dbx }) => {
       return {
         name: nodePath.basename(entry.name),
         path: entry.path_lower,
+        type: 'remote',
       }
     })
   } 
@@ -210,17 +191,20 @@ const getProjectList = async ({ dbx }) => {
 }
 
 exports.sourceNodes = async ({
+  preview, // when asked to preview
   cache, 
   actions,
   createNodeId,
   createContentDigest,
 }) => {
+  let nodes = [];
   const { createNode } = actions;
   // Dropbox entry
   const accessToken = process.env.DROPBOX_TOKEN;
   const dbx = new Dropbox({ accessToken: accessToken });
   
   let projects = await getProjectList({ dbx });
+  if (preview) { projects = projects.filter(project => preview === project.name) }
 
   for (let index = 0; index < projects.length; index++) {
     const project = projects[index];
@@ -250,8 +234,22 @@ exports.sourceNodes = async ({
 
     // Just print
     projectNodes.forEach(project => {
-      console.log(`Created project '${project.name}' at '${project.url}' `)
+      console.log(`Created project '${project.name}' at '${project.url}' `);
+      nodes.push(project)
+    });
+    imageNodes.forEach(image => {
+      nodes.push(image);
     })
   }
-  return;
+
+  return nodes;
 }
+
+exports.getProjects = async () => {
+  // Dropbox entry
+  const accessToken = process.env.DROPBOX_TOKEN;
+  const dbx = new Dropbox({ accessToken: accessToken });
+  let projects = await getProjectList({ dbx });
+
+  return projects;
+};

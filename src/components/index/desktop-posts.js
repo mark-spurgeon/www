@@ -51,12 +51,12 @@ const CardBox = styled(Link)`
     overflow: hidden;
 
     border-style: solid;
-    border-width: 0;
-    border-left-width: 1px;
-    border-color: rgba(0,0,0,0.1);
+    border-width: 1px;
+    border-color: transparent;
+    border-left-color: rgba(0,0,0,0.1);
     
     color: inherit;
-    text-decoration: none;
+    text-decoration: none !important;
     outline: none;
     background-color: inherit;
 

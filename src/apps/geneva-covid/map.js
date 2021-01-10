@@ -331,7 +331,7 @@ const TheMap = () => {
   }, [])
 
   return (
-    <div className="map-container" style={{backgroundColor:  'white', color: 'black', margin: 0, overflow:'hidden'}}>
+    <div className="map-container" style={{backgroundColor:  'white', color: 'black', margin: 0, overflow: 'hidden'}}>
       <GenevCovidMapContainer 
         style={{width: '100%', height: 500}} 
         ref={mapContainer} 
