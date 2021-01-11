@@ -110,7 +110,7 @@ const Description = styled.div`
   padding-bottom: 0;
   padding-top: 0.25rem;
   transition: all .4s;
-  color: ${props => props.hovered ? props.theme.colors.font : 'black'};
+  color: black;
 `
 
 const PostCard = ({
