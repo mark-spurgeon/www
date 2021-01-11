@@ -3,6 +3,8 @@ import { Link } from 'gatsby'
 import styled from '@emotion/styled'
 import useSwr from 'swr'
 
+import { IoEarthSharp } from 'react-icons/io5'
+
 const fetcher = (...args) => fetch(...args).then(res => res.json())
 
 const Menu = styled(Link)`
@@ -11,8 +13,12 @@ const Menu = styled(Link)`
   max-height: 2rem;
   line-height: 2rem;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   background: inherit;
-  color: #e7be95;
+  color: #e7be95 !important;
   text-decoration: none;
   border-style: solid;
   border-width: 0;
@@ -111,7 +117,7 @@ export default () => {
   
   return (
     <>
-      <Menu to="/links" title="Links">Links <LinkSeparator>/</LinkSeparator></Menu>
+      <Menu to="/links" title="Links"> <IoEarthSharp /> </Menu>
       <ListContainer ref={listContainer} onMouseEnter={() => hover.current = true} onMouseLeave={() => hover.current = false}>
         { links ? linkListItems : '...' }
       </ListContainer>

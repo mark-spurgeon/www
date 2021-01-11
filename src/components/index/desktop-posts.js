@@ -123,7 +123,6 @@ const PostCard = ({
     href,
 }) => {
   const [hovered, setHovered] = useState(false);
-  console.log('theme', theme)
   return (
         <PostCardContainer>
             <CardBox

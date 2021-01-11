@@ -3,7 +3,8 @@ import { Link } from 'gatsby';
 import styled from '@emotion/styled';
 import {  css, keyframes } from '@emotion/react';
 
-import mkoLogo from '../../media/mko-small.svg'
+import { GoMarkGithub } from 'react-icons/go'
+import { FaInstagram } from 'react-icons/fa'
 
 const Container = styled.div`
   display: block;
@@ -62,7 +63,7 @@ const TextContainer = styled.div`
     height: 5.5rem;
     overflow: hidden;
     @media (max-width: 600px) {
-      max-height: 4rem;
+      max-height: 5.5rem;
     }
     transition: all .2s;
 `
@@ -123,12 +124,16 @@ const SocialIcon = styled.a`
     font-family: "Public Sans", -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 0.8rem;
     font-weight: 600;
-    line-height: 1.8rem;
+    line-height: 2rem;
     width: 2rem;
     text-decoration: none;
     text-align: center;
 
-    color: ${props => props.color || 'black'};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: ${props => props.color || 'black'} !important;
 
     border-style: solid;
     border-width: 0;
@@ -212,10 +217,10 @@ export default ({onHover}) => {
                         markspurgeon96@hotmail.com
                     </Social>
                     <SocialIcon href="https://github.com/the-duck" target="_blank" color="rgb(40, 50, 250)" title="Marko's Github" nobg>
-                        GH
+                        <GoMarkGithub size='1.5em' />
                     </SocialIcon>
                     <SocialIcon href="https://instagram.com/marko.studio" target="_blank" color="rgb(200, 50, 80)" title="Marko's Instagram" nobg>
-                        IN
+                        <FaInstagram size='1.5em' />
                     </SocialIcon>
                 </SocialBox>
 
