@@ -5,6 +5,9 @@ html, body, #__gatsby {
     font-family: "Public Sans", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
+* {
+    outline: none !important;
+}
 
 @media (max-width: 600px) {
     html {

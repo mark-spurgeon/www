@@ -3,41 +3,40 @@ import styled from '@emotion/styled'
 import Cookies from 'js-cookie'
 
 import {
-  Label,
-  TextInput,
-  HBox, 
   Button,
-} from '../ui.js'
+  InputGroup,
+} from '@blueprintjs/core'
+
+import '@blueprintjs/core/lib/css/blueprint.css'
 
 const AuthContainer = styled.div`
-  width: 100%;
-  max-width: 28rem;
-  margin: 0.5rem auto;
+  padding: 0.5rem;
+`
+
+const AuthMessage = styled.div`
+  color: #e2062c;
+  margin: 0;
+  padding: 0;
+  padding-top: 2pt;
 `
 
 export default ({
   onAuth,
 }) => {
+  const [authenticated, setAuthenticated] = useState(false);
   const [cookieChecked, setCookieChecked] = useState(false);
-  const [cookiePassCode, setCookiePassCode] = useState('');
   const [passCode, setPassCode] = useState('');
   const [message, setMessage] = useState('');
 
   useEffect(() => {
     let cpc = Cookies.get('ms-links-passcode')
     if (cpc) {
-      setCookiePassCode(cpc)
+      setPassCode(cpc)
+      authenticate(cpc)
     } else {
       setCookieChecked(true)
     }
   }, [])
-
-  useEffect(() => {
-    if (cookiePassCode) {
-      setPassCode(cookiePassCode)
-      authenticate(cookiePassCode)
-    }
-  }, [cookiePassCode])
 
   const authenticate = (inputCode) => {
     let code = inputCode || passCode;
@@ -64,24 +63,35 @@ export default ({
         }
       }
       // Notify that cookie is checked after authenticating
+      setAuthenticated(true)
       setCookieChecked(true)
     })
     .catch(e => {
-      console.warn(`Error during authentication: ${e.message}`)
+      console.warn(`Error during authentication: ${e.message}`);
+      setAuthenticated(false)
     })
   }
 
   return (
     <AuthContainer>
-      <Label>{cookieChecked ? 'Passcode' : 'Looking up for passcode...'}</Label>
-      { 
-        cookieChecked && 
-          <HBox>
-            <TextInput value={passCode} onChange={(e) => setPassCode(e.target.value)} type="password" placeholder="You need to know the secret word"/>
-            <Button title="authenticate" color="#319177" onClick={() => authenticate()}>Auth</Button>
-          </HBox>
+      { ! cookieChecked &&
+        <div>Checking password</div>
       }
-      <Label color="#e2062c">{message}</Label>
+
+      { cookieChecked && ! authenticated &&
+        <InputGroup
+          onChange={(e) => setPassCode(e.target.value)}
+          type="password"
+          class="bp3-input"
+          placeholder="Password" 
+          rightElement={<Button icon="log-in" onClick={() => authenticate()} title="Log in" />}
+        />
+      }
+
+      { authenticated &&
+        <div>Successfully logged in</div>
+      }
+      <AuthMessage>{message}</AuthMessage>
     </AuthContainer>
   )
 }
