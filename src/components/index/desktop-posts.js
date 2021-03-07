@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { Link } from 'gatsby';
 
@@ -113,6 +113,49 @@ const Description = styled.div`
   color: black;
 `
 
+const Cursor = (props) => {
+  const [mousePosition, setMousePosition] = useState({ x: null, y: null });
+  const [size, setSize] = useState(10);
+
+  var lastUpdateCall=null;
+  const updateMousePosition = ev => {
+    if (props.hovered) {
+      //ev.preventDefault();
+      if (lastUpdateCall) { cancelAnimationFrame(lastUpdateCall)};
+      lastUpdateCall = requestAnimationFrame(() => {
+        setMousePosition({ x: ev.clientX, y: ev.clientY });
+        lastUpdateCall = null;
+      })
+    }
+  };
+
+  useEffect(() => {
+    setSize(40 + Math.random() * 120)
+
+    window.addEventListener("mousemove", updateMousePosition);
+    return () => window.removeEventListener("mousemove", updateMousePosition);
+  }, []);
+  
+  const CursorElement = styled.div`
+    display: block;
+    width: ${props => props.size}px;
+    height: ${props => props.size}px;
+    border-radius: 50%;
+    position: fixed;
+    left: ${props => props.mouse.x ? props.mouse.x - (props.size / 2) : -120 }px;
+    top: ${props => props.mouse.y ? props.mouse.y - (props.size / 2) : -120 }px;
+    background: ${props => props.theme.colors.background};
+    left: ${props => props.hovered ? 1 : 0.6};
+
+    transition: all .6s;
+    pointer-events: none;
+    user-select: none; 
+  `
+
+  // console.log(mouse.current)
+  return <CursorElement {...props} mouse={mousePosition} size={size} />
+}
+
 const PostCard = ({
     title = '',
     description = 'nooo',
@@ -135,7 +178,10 @@ const PostCard = ({
                 onMouseLeave={() => setHovered(false)}
                 hovered={hovered}
                 >
-                <ColorDiv hovered={hovered} theme={theme} />
+                {
+                  hovered && 
+                  <Cursor hovered={hovered} theme={theme} key={href} />
+                }
                 <TextContainer hovered={hovered}>
                   <Title hovered={hovered} >{title}</Title>
                   { title.length <= 18 && description &&  
