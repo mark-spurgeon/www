@@ -141,19 +141,20 @@ const Cursor = (props) => {
     width: ${props => props.size}px;
     height: ${props => props.size}px;
     border-radius: 50%;
-    position: fixed;
-    left: ${props => props.mouse.x ? props.mouse.x - (props.size / 2) : -120 }px;
-    top: ${props => props.mouse.y ? props.mouse.y - (props.size / 2) : -120 }px;
+    position: absolute;
+    left: ${props => (props.mouse.x && props.position.x) ? props.mouse.x - props.position.x - (props.size / 2): - 120 }px;
+    top: ${props => (props.mouse.y && props.position.y) ? props.mouse.y  - props.position.y - (props.size / 2) + 20 : - 120 }px;
     background: ${props => props.theme.colors.background};
-    left: ${props => props.hovered ? 1 : 0.6};
+    opacity: ${props => props.hovered ? 1 : 0.6};
 
+    z-index: -1;
     transition: all .6s;
     pointer-events: none;
     user-select: none; 
   `
 
   // console.log(mouse.current)
-  return <CursorElement {...props} mouse={mousePosition} size={size} />
+  return <CursorElement {...props} position={props.position} mouse={mousePosition} size={size} />
 }
 
 const PostCard = ({
@@ -166,6 +167,8 @@ const PostCard = ({
     href,
 }) => {
   const [hovered, setHovered] = useState(false);
+  const [position, setPosition] = useState(false);
+
   return (
         <PostCardContainer>
             <CardBox
@@ -177,10 +180,16 @@ const PostCard = ({
                 }}
                 onMouseLeave={() => setHovered(false)}
                 hovered={hovered}
+                ref={element => {
+                  try {
+                    let rect = element.getBoundingClientRect();
+                    setPosition(rect);
+                  } catch (e) {}
+                }}
                 >
                 {
                   hovered && 
-                  <Cursor hovered={hovered} theme={theme} key={href} />
+                  <Cursor hovered={hovered} theme={theme} key={href} position={position} />
                 }
                 <TextContainer hovered={hovered}>
                   <Title hovered={hovered} >{title}</Title>
